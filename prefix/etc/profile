@@ -1,0 +1,20 @@
+D="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
+
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+export EDITOR=$D/bin/mate
+
+########################################################################### Ruby
+if which ruby >/dev/null && which gem >/dev/null; then
+    PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+fi
+
+##################################################################### Completion
+[ -d "$D/etc/completion.d" ] && for f in "$D"/etc/completion.d/*.$(basename $SHELL); do
+    source $f
+done
+
+######################################################################### Prompt
+source $D/bin/git-prompt.sh
+# I tried using variables to make this readable and it just broke it :(
+export PS1="\["'$(__git_ps1 "\e[38;05;208m\]%s\[\e[m")'"\e[38;05;240m\]\W\[\e[m\e[0;37m\]\$ \[\e[m\]"
