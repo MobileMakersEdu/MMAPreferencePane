@@ -76,6 +76,7 @@ BOOL mdfind(NSString *app) {
 
 - (void)activate {
     [@"/usr/bin/git config --global ui.color auto" exec];
+    [@"/usr/bin/git config --global push.default simple" exec];  // squelch warning and be forward thinking
 
     NSTask *task = [NSTask new];
     task.launchPath = @"/usr/bin/defaults";
