@@ -1,100 +1,125 @@
 #import "main.h"
 
-static BOOL mdfind(NSString *app) {
+#warning FIXME github credential.helper as then they can clone easier s
+#warning FIXME update README to use https clones
+#warning FIXME redo the README and screenshots (where appropriate)
+
+BOOL mdfind(NSString *app) {
     return [NSString stringWithFormat:@"/usr/bin/mdfind %@ kind:app", app].stdout.length;
 }
 
 
 
 @implementation MMPane {
-    IBOutlet __weak MMLED *mavericks;
-    IBOutlet __weak MMLED *xcode;
-    IBOutlet __weak MMLED *git;
-    IBOutlet __weak MMLED *gitx;
-    IBOutlet __weak MMLED *github;
-    IBOutlet __weak MMLED *dropbox;
-    IBOutlet __weak MMLED *ruby;
-    IBOutlet __weak MMLED *cocoapods;
-    IBOutlet __weak MMLED *mmawe;
+    IBOutlet MMLED *mavericks;
+    IBOutlet MMLED *xcode;
+    IBOutlet MMLED *git;
+    IBOutlet MMLED *gitx;
+    IBOutlet MMLED *github;
+    IBOutlet MMLED *textmate;
+    IBOutlet MMLED *mmmmmm;
+    IBOutlet NSTextView *textView;
+    IBOutlet MMSwitchView *bigSwitch;
+    IBOutlet  NSButton *refresh;
 }
 
 - (void)mainViewDidLoad {
-    #define dispatch(fob) \
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{ \
-            BOOL result = [self fob]; \
-            dispatch_async(dispatch_get_main_queue(), ^{ \
-                fob.on = result; \
-            }); \
-        });
+    textView.font = [NSFont systemFontOfSize:13];
+    [textView setAutomaticLinkDetectionEnabled:YES];
 
-    dispatch(mavericks);
-    dispatch(xcode);
-    dispatch(git);
-    dispatch(gitx);
-    dispatch(github);
-    dispatch(dropbox);
-    dispatch(ruby);
-    dispatch(cocoapods);
-    dispatch(mmawe);
+    bigSwitch.state = [[[MMmmmmDiagnostic alloc] initWithBundle:self.bundle] execute:nil] ? NSOnState : NSOffState;
+    bigSwitch.target = self;
+    bigSwitch.action = @selector(onSwitchToggled);
+
+    refresh.target = self;
+    refresh.action = @selector(check);
+
+    [self check];
 }
 
-- (BOOL)mavericks {
-    return [[@"/usr/sbin/sysctl kern.osrelease".stdout componentsSeparatedByString:@":"][1] intValue] == 13;
+- (void)awakeFromNib {
+    bigSwitch.target = self;
+    bigSwitch.action = @selector(onSwitchToggled);
 }
 
-- (BOOL)xcode {
-    return @"/usr/bin/xcode-select --print-path".exitSuccess;
-}
+- (IBAction)check {
+    [@[mavericks, xcode, git, gitx, github, textmate, mmmmmm] makeObjectsPerformSelector:@selector(reset)];
+    textView.string = @"";
 
-- (BOOL)git {
-    return @"/usr/bin/which git".exitSuccess
-        && [@"/usr/bin/git config --global core.editor".stdout isEqual:@"mate -w"];
-}
-
-- (BOOL)gitx {
-    return mdfind(@"GitX");
-}
-
-- (BOOL)github {
-    return (@"~/.ssh/id_rsa".isFile || @"~/.ssh/id_rsa".isFile)
-        && @"/usr/bin/git config --global user.name".exitSuccess
-        && @"/usr/bin/git config --global user.email".exitSuccess;
-}
-
-- (BOOL)dropbox {
-    return mdfind(@"Dropbox");
-}
-
-- (BOOL)ruby {
-    return NO;
-}
-
-- (BOOL)cocoapods {
     @try {
-        NSTask *task = [NSTask new];
-        task.launchPath = @"/bin/bash";
-        task.arguments = @[@"-lc", @"/usr/bin/which pod"];
-        task.standardOutput = [NSPipe pipe];
-        [task launch];
-        [task waitUntilExit];
-
-        NSData *data = [task.standardOutput fileHandleForReading].readDataToEndOfFile;
-        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        return s.length;
-    } @catch (id e) {
-        NSLog(@"MM: %@", e);
-        return NO;
+        [mavericks checkWith:[MMMavericksDiagnostic new]];
+        [xcode checkWith:[MMXcodeDiagnostic new]];
+        [git checkWith:[MMGitDiagnostic new]];
+        [gitx checkWith:[MMGitXDiagnostic new]];
+        [github checkWith:[MMGitHubDiagnostic new]];
+        [textmate checkWith:[MMTextMateDiagnostic new]];
+        [mmmmmm checkWith:[[MMmmmmDiagnostic alloc] initWithBundle:self.bundle]];
+    }
+    @catch (NSError *e) {
+        NSMutableString *s = @"HOW TO BE GREEN:\n".mutableCopy;
+        id ss = e.userInfo[NSLocalizedDescriptionKey]
+            ?: e.code == MMDiagnosticFailedAmber
+                ? @"Please turn the big switch on"
+                : @"Unexpected error, please email max@mobilemakers.co";
+        [s appendString:ss];
+        ss = e.userInfo[NSLocalizedRecoverySuggestionErrorKey];
+        if (ss) {
+            [s appendString:@"\n\n"];
+            [s appendString:ss];
+        }
+        textView.string = s;
+        [textView setEnabledTextCheckingTypes:NSTextCheckingTypeLink];
+        [textView checkTextInDocument:nil];
+        textView.string = s;
     }
 }
 
-- (BOOL)mmawe {
-    return [@"~/.bash_profile".read.lines containsObject:self.source];
+- (void)activate {
+    [@"/usr/bin/git config --global ui.color auto" exec];
+
+    NSTask *task = [NSTask new];
+    task.launchPath = @"/usr/bin/defaults";
+    task.arguments = @[@"write", @"com.apple.Terminal", @"Default Window Settings", @"Silver Aerogel"];
+    [task launch];
+    [task waitUntilExit];
+
+    task = [NSTask new];
+    task.launchPath = @"/usr/bin/defaults";
+    task.arguments = @[@"write", @"com.apple.Terminal", @"Startup Window Settings", @"Silver Aerogel"];
+    [task launch];
+    [task waitUntilExit];
+
+    NSString *sourceLine = [[MMmmmmDiagnostic alloc] initWithBundle:self.bundle].bashProfileSourceLine;
+    NSMutableString *bashProfile = @"~/.bash_profile".read.strip.mutableCopy;
+
+    if (![bashProfile.lines containsObject:sourceLine])
+        [[[@"~/.bash_profile" append:@"\n\n"] append:sourceLine] append:@"\n"];
 }
 
-- (NSString *)source {
-    id profile = [self.bundle.bundlePath stringByAppendingPathComponent:@"Contents/etc/profile"];
-    profile = [profile stringByReplacingOccurrencesOfString:@"~".stringByExpandingTildeInPath withString:@"~"];
-    return [NSString stringWithFormat:@"source %@", profile];
+- (void)deactivate {
+    NSString *sourceLine = [[MMmmmmDiagnostic alloc] initWithBundle:self.bundle].bashProfileSourceLine;
+    NSMutableString *bashProfile = @"~/.bash_profile".read.strip.mutableCopy;
+    NSMutableArray *lines = bashProfile.lines.mutableCopy;
+
+    NSUInteger ii = [lines indexOfObject:sourceLine];
+    if (ii != NSNotFound) {
+        [lines removeObjectAtIndex:ii];
+        id path = [@"~/.bash_profile" stringByExpandingTildeInPath];
+        id text = [lines componentsJoinedByString:@"\n"].strip;
+        [text writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    }
+}
+
+- (IBAction)onSwitchToggled {
+    if (bigSwitch.state == NSOnState)
+        [self activate];
+    else
+        [self deactivate];
+
+    [self check];
 }
 
 @end
+
+
+

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+mate="$(mdfind GitX kind:app)"
+exec "$mate"/Contents/Resources/gitx "$@"

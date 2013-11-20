@@ -1,0 +1,4 @@
+#!/bin/sh
+
+mate="$(mdfind TextMate kind:app)"
+exec "$mate"/Contents/Resources/mate "$@"

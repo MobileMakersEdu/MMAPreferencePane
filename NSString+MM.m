@@ -8,6 +8,10 @@
 
 @implementation NSString (MM)
 
+- (void)exec {
+    (void)[self exitSuccess];
+}
+
 - (BOOL)exitSuccess {
     @try {
         MMArgs;
@@ -36,8 +40,8 @@
         [task waitUntilExit];
 
         NSData *data = [task.standardOutput fileHandleForReading].readDataToEndOfFile;
-        id s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        return [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        return s.strip;
     } @catch (id e) {
         NSLog(@"MM: %@", e);
         return nil;
@@ -59,9 +63,27 @@
 - (NSArray *)lines {
     NSMutableArray *lines = @[].mutableCopy;
     for (NSString *line in [self componentsSeparatedByString:@"\n"])
-        if (line.strip.length > 0)
-            [lines addObject:line];
+        [lines addObject:line.strip];
     return lines;
+}
+
+- (NSString *)append:(NSString *)contents {
+    id path = [self stringByExpandingTildeInPath];
+
+    NSFileHandle *fh = [NSFileHandle fileHandleForWritingAtPath:path];
+    if (fh == nil) {
+        [contents writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        return self;
+    }
+
+    [fh truncateFileAtOffset:[fh seekToEndOfFile]];
+    NSData *encoded = [contents dataUsingEncoding:NSUTF8StringEncoding];
+
+    if (encoded) {
+        [fh writeData:encoded];
+        return self;
+    } else
+        return nil;
 }
 
 @end

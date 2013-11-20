@@ -2,12 +2,9 @@ D="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
 
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
-export EDITOR=$D/bin/mate
-
-########################################################################### Ruby
-if which ruby >/dev/null && which gem >/dev/null; then
-    PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
-fi
+export EDITOR="$D/bin/mate"
+export GIT_EDITOR="$EDITOR"
+export GIT_EXTERNAL_DIFF="$D/bin/opendiff.sh"
 
 ##################################################################### Completion
 [ -d "$D/etc/completion.d" ] && for f in "$D"/etc/completion.d/*.$(basename $SHELL); do

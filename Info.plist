@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string></string>
+	<string>Icon</string>
 	<key>CFBundleIdentifier</key>
 	<string>co.mobilemakers.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -27,7 +27,7 @@
 	<key>NSMainNibFile</key>
 	<string>main</string>
 	<key>NSPrefPaneIconFile</key>
-	<string>MMPane.png</string>
+	<string>Icon</string>
 	<key>NSPrefPaneIconLabel</key>
 	<string>Mobile Makers</string>
 	<key>NSPrincipalClass</key>
