@@ -5,6 +5,7 @@ export LSCOLORS=ExFxCxDxBxegedabagacad
 export EDITOR="$D/bin/mate"
 export GIT_EDITOR="$EDITOR"
 export GIT_EXTERNAL_DIFF="$D/bin/opendiff.sh"
+export PATH="$D"/bin:"$PATH"
 
 ##################################################################### Completion
 [ -d "$D/etc/completion.d" ] && for f in "$D"/etc/completion.d/*.$(basename $SHELL); do
