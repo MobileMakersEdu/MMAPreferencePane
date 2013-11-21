@@ -1,6 +1,5 @@
 #import "main.h"
 
-#warning FIXME github credential.helper as then they can clone easier s
 #warning FIXME update README to use https clones
 #warning FIXME redo the README and screenshots (where appropriate)
 
@@ -20,7 +19,7 @@ BOOL mdfind(NSString *app) {
     IBOutlet MMLED *mmmmmm;
     IBOutlet NSTextView *textView;
     IBOutlet MMSwitchView *bigSwitch;
-    IBOutlet  NSButton *refresh;
+    IBOutlet NSButton *refresh;
 }
 
 - (void)mainViewDidLoad {
@@ -46,6 +45,8 @@ BOOL mdfind(NSString *app) {
     [@[mavericks, xcode, git, gitx, github, textmate, mmmmmm] makeObjectsPerformSelector:@selector(reset)];
     textView.string = @"";
 
+    MMmmmmDiagnostic *mmmmmmdiagnostic = [[MMmmmmDiagnostic alloc] initWithBundle:self.bundle];
+
     @try {
         [mavericks checkWith:[MMMavericksDiagnostic new]];
         [xcode checkWith:[MMXcodeDiagnostic new]];
@@ -53,7 +54,7 @@ BOOL mdfind(NSString *app) {
         [gitx checkWith:[MMGitXDiagnostic new]];
         [github checkWith:[MMGitHubDiagnostic new]];
         [textmate checkWith:[MMTextMateDiagnostic new]];
-        [mmmmmm checkWith:[[MMmmmmDiagnostic alloc] initWithBundle:self.bundle]];
+        [mmmmmm checkWith:mmmmmmdiagnostic];
     }
     @catch (NSError *e) {
         NSMutableString *s = @"HOW TO BE GREEN:\n".mutableCopy;
@@ -64,7 +65,7 @@ BOOL mdfind(NSString *app) {
         [s appendString:ss];
         ss = e.userInfo[NSLocalizedRecoverySuggestionErrorKey];
         if (ss) {
-            [s appendString:@"\n\n"];
+            [s appendString:@", visit this URL:\n\n"];
             [s appendString:ss];
         }
         textView.string = s;
@@ -72,11 +73,15 @@ BOOL mdfind(NSString *app) {
         [textView checkTextInDocument:nil];
         textView.string = s;
     }
+
+    int state = [mmmmmmdiagnostic execute:nil] == NO ? NSOffState : NSOnState;
+    [bigSwitch setState:state animate:YES];
 }
 
 - (void)activate {
     [@"/usr/bin/git config --global ui.color auto" exec];
     [@"/usr/bin/git config --global push.default simple" exec];  // squelch warning and be forward thinking
+    [@"/usr/bin/git config --global credential.helper cache" exec];
 
     NSTask *task = [NSTask new];
     task.launchPath = @"/usr/bin/defaults";
