@@ -1,4 +1,4 @@
 #!/bin/sh
 
-mate="$(mdfind GitX kind:app)"
+mate="$(mdfind GitX kind:app | head -n1)"
 exec "$mate"/Contents/Resources/gitx "$@"

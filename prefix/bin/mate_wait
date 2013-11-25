@@ -1,4 +1,4 @@
 #!/bin/sh
 
-mate="$(mdfind TextMate kind:app)"
+mate="$(mdfind TextMate kind:app | head -n1)"
 exec "$mate"/Contents/Resources/mate -w "$@"
