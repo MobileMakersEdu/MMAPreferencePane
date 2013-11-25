@@ -25,7 +25,7 @@ static BOOL credhelp() {
     }
     if (!@"/usr/bin/git config --global user.email".exitSuccess) {
         id info = @{
-            NSLocalizedDescriptionKey: @"You need to set your git email, USE THE SAME EMAIL AS YOUR GITHUB ACCOUNT",
+            NSLocalizedDescriptionKey: @"You’ve set your git username, but you also need to set your git email, USE THE SAME EMAIL AS YOUR GITHUB ACCOUNT",
             NSLocalizedRecoverySuggestionErrorKey: @"http://help.github.com/articles/setting-your-email-in-git"
         };
         *error = [NSError errorWithDomain:MMErrorDomain code:MMDiagnosticFailedRed userInfo:info];
