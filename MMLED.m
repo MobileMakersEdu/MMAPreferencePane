@@ -7,7 +7,7 @@
 #define NSColorRedStroke [NSColor colorWithRed:0.7 green:0.3 blue:0 alpha:1]
 #define NSColorRedFill [NSColor colorWithRed:1 green:0 blue:0 alpha:0.45]
 #define NSColorGrayStroke [NSColor grayColor]
-#define NSColorGrayFill [NSColor colorWithWhite:0 alpha:0.12];
+#define NSColorGrayFill [NSColor colorWithDeviceWhite:0 alpha:0.12];
 
 
 @implementation MMLED {
