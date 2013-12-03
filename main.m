@@ -100,6 +100,8 @@ BOOL mdfind(NSString *app) {
 
     if (![bashProfile.lines containsObject:sourceLine])
         [[[@"~/.bash_profile" append:@"\n\n"] append:sourceLine] append:@"\n"];
+
+    [@"/usr/bin/killall Terminal" exec];
 }
 
 - (void)deactivate {
