@@ -1,8 +1,5 @@
 #import "main.h"
 
-#warning FIXME update README to use https clones
-#warning FIXME redo the README and screenshots (where appropriate)
-
 BOOL mdfind(NSString *app) {
     return [NSString stringWithFormat:@"/usr/bin/mdfind %@ kind:app", app].stdout.length;
 }
@@ -60,7 +57,7 @@ BOOL mdfind(NSString *app) {
         NSMutableString *s = @"HOW TO BE GREEN:\n".mutableCopy;
         id ss = e.userInfo[NSLocalizedDescriptionKey]
             ?: e.code == MMDiagnosticFailedAmber
-                ? @"Please turn the big switch on"
+                ? @"Please turn the big switch on. You may also need to open Xcode and accept its license."
                 : @"Unexpected error, please email max@mobilemakers.co";
         [s appendString:ss];
         ss = e.userInfo[NSLocalizedRecoverySuggestionErrorKey];
@@ -128,6 +125,3 @@ BOOL mdfind(NSString *app) {
 }
 
 @end
-
-
-
