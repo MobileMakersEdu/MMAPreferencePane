@@ -21,7 +21,9 @@
 		6373DF2B183C07CE00E866D1 /* MMXcodeDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF21183C07CE00E866D1 /* MMXcodeDiagnostic.m */; };
 		6393B9C5182AE96D005161BA /* NSString+MM.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9C4182AE88D005161BA /* NSString+MM.m */; };
 		6393B9D0182B1E6B005161BA /* MMSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9CF182B1E6B005161BA /* MMSwitchView.m */; };
+		63A3BA1018B3D06C00C60A4E /* MobileMakers.terminal in Resources */ = {isa = PBXBuildFile; fileRef = 63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */; };
 		63C345E4182AA1EA00B3D152 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C345E3182AA1EA00B3D152 /* main.m */; };
+		63E5A6CD18B3E23D00469346 /* MobileMakers.dvtcolortheme in Resources */ = {isa = PBXBuildFile; fileRef = 63E5A6CC18B3E23D00469346 /* MobileMakers.dvtcolortheme */; };
 		6B5B2334AFCB43BC9575C582 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42F294050E1046B48493AE71 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -43,9 +45,11 @@
 		6373DF21183C07CE00E866D1 /* MMXcodeDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMXcodeDiagnostic.m; path = diagnostics/MMXcodeDiagnostic.m; sourceTree = "<group>"; };
 		6393B9C4182AE88D005161BA /* NSString+MM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MM.m"; sourceTree = "<group>"; };
 		6393B9CF182B1E6B005161BA /* MMSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMSwitchView.m; sourceTree = "<group>"; };
+		63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MobileMakers.terminal; sourceTree = "<group>"; };
 		63C345DD182AA1EA00B3D152 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		63C345E2182AA1EA00B3D152 /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = SOURCE_ROOT; };
 		63C345E3182AA1EA00B3D152 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = SOURCE_ROOT; };
+		63E5A6CC18B3E23D00469346 /* MobileMakers.dvtcolortheme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MobileMakers.dvtcolortheme; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,8 @@
 				63C345DD182AA1EA00B3D152 /* Info.plist */,
 				63243099182AB0B000828D43 /* MMPane.prefPane */,
 				63243097182AA4E400828D43 /* MMPane.xcassets */,
+				63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */,
+				63E5A6CC18B3E23D00469346 /* MobileMakers.dvtcolortheme */,
 				2A60A4C198134B79A5244A32 /* Pods */,
 			);
 			sourceTree = "<group>";
@@ -158,7 +164,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				63243096182AA29200828D43 /* main.xib in Resources */,
+				63E5A6CD18B3E23D00469346 /* MobileMakers.dvtcolortheme in Resources */,
 				63243098182AA4E400828D43 /* MMPane.xcassets in Resources */,
+				63A3BA1018B3D06C00C60A4E /* MobileMakers.terminal in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -83,13 +83,13 @@ BOOL mdfind(NSString *app) {
 
     NSTask *task = [NSTask new];
     task.launchPath = @"/usr/bin/defaults";
-    task.arguments = @[@"write", @"com.apple.Terminal", @"Default Window Settings", @"Silver Aerogel"];
+    task.arguments = @[@"write", @"com.apple.Terminal", @"Default Window Settings", @"MobileMakers"];
     [task launch];
     [task waitUntilExit];
 
     task = [NSTask new];
     task.launchPath = @"/usr/bin/defaults";
-    task.arguments = @[@"write", @"com.apple.Terminal", @"Startup Window Settings", @"Silver Aerogel"];
+    task.arguments = @[@"write", @"com.apple.Terminal", @"Startup Window Settings", @"MobileMakers"];
     [task launch];
     [task waitUntilExit];
 
@@ -100,6 +100,39 @@ BOOL mdfind(NSString *app) {
         [[[@"~/.bash_profile" append:@"\n\n"] append:sourceLine] append:@"\n"];
 
     [@"/usr/bin/killall Terminal" exec];
+
+    id path = [self.bundle.bundlePath stringByAppendingPathComponent:@"Contents/Resources/MobileMakers.terminal"];
+    [[NSString stringWithFormat:@"/usr/bin/open %@", path] exec];
+
+    id err = nil;
+    id mgr = [NSFileManager defaultManager];
+    id dst = @"~/Library/Developer/Xcode/UserData/FontAndColorThemes".stringByExpandingTildeInPath;
+    id src = [self.bundle.bundlePath stringByAppendingString:@"/Contents/Resources/MobileMakers.dvtcolortheme"];
+    [mgr createDirectoryAtPath:dst withIntermediateDirectories:YES attributes:nil error:nil];
+    [mgr copyItemAtPath:src toPath:[dst stringByAppendingString:@"/MobileMakers.dvtcolortheme"] error:&err];
+    if (!err || [err code] == 516) {
+
+        @[@[@"DVTFontAndColorCurrentTheme", @"MobileMakers.dvtcolortheme"],
+          @[@"DVTTextEditorTrimWhitespaceOnlyLines", @"-bool", @"YES"],
+          @[@"DVTTextShowLineNumbers", @"-bool", @"YES"],
+          @[@"DVTTextEditorTrimTrailingWhitespace", @"-bool", @"YES"]
+         ].each(^(NSArray *args){
+             NSTask *task = [NSTask new];
+             task.launchPath = @"/usr/bin/defaults";
+             task.arguments = @[@"write", @"com.apple.dt.Xcode"].concat(args);
+             [task launch];
+             [task waitUntilExit];
+        });
+
+        // sync or doesn't seem to work
+        task = [NSTask new];
+        task.launchPath = @"/usr/bin/python";
+        task.arguments = @[@"-c", @"from Foundation import CFPreferencesAppSynchronize\nCFPreferencesAppSynchronize('com.apple.dt.Xcode')"];
+        [task launch];
+        [task waitUntilExit];
+    } else {
+        NSLog(@"%@", err);
+    }
 }
 
 - (void)deactivate {
