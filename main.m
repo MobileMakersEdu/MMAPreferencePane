@@ -5,6 +5,24 @@ BOOL mdfind(NSString *app) {
     return [NSString stringWithFormat:@"/usr/bin/mdfind %@ kind:app", app].stdout.length;
 }
 
+static void MMSyncPrefs(id domain) {
+    id py = [NSString stringWithFormat:@"from Foundation import CFPreferencesAppSynchronize\nCFPreferencesAppSynchronize('%@')", domain];
+
+    NSTask *task = [NSTask new];
+    task.launchPath = @"/usr/bin/python";
+    task.arguments = @[@"-c", py];
+    [task launch];
+    [task waitUntilExit];
+}
+
+#define MMWritePrefs(...) { \
+    NSTask *task = [NSTask new]; \
+    task.launchPath = @"/usr/bin/defaults"; \
+    task.arguments = @[__VA_ARGS__]; \
+    [task launch]; \
+    [task waitUntilExit]; \
+}
+
 
 
 @implementation MMPane {
@@ -81,17 +99,9 @@ BOOL mdfind(NSString *app) {
     [@"/usr/bin/git config --global push.default simple" exec];  // squelch warning and be forward thinking
     [@"/usr/bin/git config --global credential.helper cache" exec];
 
-    NSTask *task = [NSTask new];
-    task.launchPath = @"/usr/bin/defaults";
-    task.arguments = @[@"write", @"com.apple.Terminal", @"Default Window Settings", @"MobileMakers"];
-    [task launch];
-    [task waitUntilExit];
-
-    task = [NSTask new];
-    task.launchPath = @"/usr/bin/defaults";
-    task.arguments = @[@"write", @"com.apple.Terminal", @"Startup Window Settings", @"MobileMakers"];
-    [task launch];
-    [task waitUntilExit];
+    MMWritePrefs(@"com.apple.Terminal", @"Default Window Settings", @"MobileMakers");
+    MMWritePrefs(@"com.apple.Terminal", @"Startup Window Settings", @"MobileMakers");
+    MMSyncPrefs(@"com.apple.Terminal");
 
     NSString *sourceLine = [[MMmmmmDiagnostic alloc] initWithBundle:self.bundle].bashProfileSourceLine;
     NSMutableString *bashProfile = @"~/.bash_profile".read.strip.mutableCopy;
@@ -102,7 +112,7 @@ BOOL mdfind(NSString *app) {
     [@"/usr/bin/killall Terminal" exec];
 
     id path = [self.bundle.bundlePath stringByAppendingPathComponent:@"Contents/Resources/MobileMakers.terminal"];
-    [[NSString stringWithFormat:@"/usr/bin/open %@", path] exec];
+    [[NSString stringWithFormat:@"/usr/bin/open -g %@", path] exec];
 
     id err = nil;
     id mgr = [NSFileManager defaultManager];
@@ -111,25 +121,11 @@ BOOL mdfind(NSString *app) {
     [mgr createDirectoryAtPath:dst withIntermediateDirectories:YES attributes:nil error:nil];
     [mgr copyItemAtPath:src toPath:[dst stringByAppendingString:@"/MobileMakers.dvtcolortheme"] error:&err];
     if (!err || [err code] == 516) {
-
-        @[@[@"DVTFontAndColorCurrentTheme", @"MobileMakers.dvtcolortheme"],
-          @[@"DVTTextEditorTrimWhitespaceOnlyLines", @"-bool", @"YES"],
-          @[@"DVTTextShowLineNumbers", @"-bool", @"YES"],
-          @[@"DVTTextEditorTrimTrailingWhitespace", @"-bool", @"YES"]
-         ].each(^(NSArray *args){
-             NSTask *task = [NSTask new];
-             task.launchPath = @"/usr/bin/defaults";
-             task.arguments = @[@"write", @"com.apple.dt.Xcode"].concat(args);
-             [task launch];
-             [task waitUntilExit];
-        });
-
-        // sync or doesn't seem to work
-        task = [NSTask new];
-        task.launchPath = @"/usr/bin/python";
-        task.arguments = @[@"-c", @"from Foundation import CFPreferencesAppSynchronize\nCFPreferencesAppSynchronize('com.apple.dt.Xcode')"];
-        [task launch];
-        [task waitUntilExit];
+        MMWritePrefs(@"com.apple.dt.Xcode", @"DVTFontAndColorCurrentTheme", @"MobileMakers.dvtcolortheme");
+        MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextEditorTrimWhitespaceOnlyLines", @"-bool", @"YES");
+        MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextShowLineNumbers", @"-bool", @"YES");
+        MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextEditorTrimTrailingWhitespace", @"-bool", @"YES");
+        MMSyncPrefs(@"com.apple.dt.Xcode");
     } else {
         NSLog(@"%@", err);
     }
@@ -149,13 +145,28 @@ BOOL mdfind(NSString *app) {
     }
 }
 
-- (IBAction)onSwitchToggled {
-    if (bigSwitch.state == NSOnState)
-        [self activate];
-    else
-        [self deactivate];
+BOOL running = NO;
 
-    [self check];
+- (IBAction)onSwitchToggled {
+    if (running)
+        return;
+
+    if (bigSwitch.state == NSOnState) {
+        running = YES;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            @try {
+                [self activate];
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [self check];
+                }];
+            } @finally {
+                running = NO;
+            }
+        });
+    } else {
+        [self deactivate];
+        [self check];
+    }
 }
 
 @end
