@@ -22,9 +22,12 @@
 		6393B9C5182AE96D005161BA /* NSString+MM.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9C4182AE88D005161BA /* NSString+MM.m */; };
 		6393B9D0182B1E6B005161BA /* MMSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9CF182B1E6B005161BA /* MMSwitchView.m */; };
 		63C345E4182AA1EA00B3D152 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C345E3182AA1EA00B3D152 /* main.m */; };
+		6B5B2334AFCB43BC9575C582 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42F294050E1046B48493AE71 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2E6B379699C3478E98464018 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		42F294050E1046B48493AE71 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		63243095182AA29200828D43 /* main.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = main.xib; sourceTree = SOURCE_ROOT; };
 		63243097182AA4E400828D43 /* MMPane.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MMPane.xcassets; sourceTree = "<group>"; };
 		63243099182AB0B000828D43 /* MMPane.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MMPane.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,7 +48,27 @@
 		63C345E3182AA1EA00B3D152 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		DABA4B40BEDB41C5B907E7C4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B5B2334AFCB43BC9575C582 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
+		2A60A4C198134B79A5244A32 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2E6B379699C3478E98464018 /* Pods.xcconfig */,
+				42F294050E1046B48493AE71 /* libPods.a */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		6373DF2C183C07D600E866D1 /* Diagnostics */ = {
 			isa = PBXGroup;
 			children = (
@@ -75,6 +98,7 @@
 				63C345DD182AA1EA00B3D152 /* Info.plist */,
 				63243099182AB0B000828D43 /* MMPane.prefPane */,
 				63243097182AA4E400828D43 /* MMPane.xcassets */,
+				2A60A4C198134B79A5244A32 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,9 +109,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 63C345EC182AA1EA00B3D152 /* Build configuration list for PBXNativeTarget "MMPane" */;
 			buildPhases = (
+				AEA3FF6E7F494F69A31CE619 /* Check Pods Manifest.lock */,
 				63C345CA182AA1EA00B3D152 /* Sources */,
 				63C345CD182AA1EA00B3D152 /* Resources */,
 				6393B9CE182B0A9B005161BA /* ShellScript */,
+				DABA4B40BEDB41C5B907E7C4 /* Frameworks */,
+				9396AAD86C46499AAED3FD7F /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -150,6 +177,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd $PROJECT_DIR/prefix && rsync -r . $BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/..";
+		};
+		9396AAD86C46499AAED3FD7F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AEA3FF6E7F494F69A31CE619 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -247,13 +304,17 @@
 		};
 		63C345ED182AA1EA00B3D152 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E6B379699C3478E98464018 /* Pods.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
-				OTHER_CFLAGS = "-Wno-logical-op-parentheses ";
+				OTHER_CFLAGS = (
+					"-Wno-logical-op-parentheses",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = prefPane;
 			};
@@ -261,13 +322,17 @@
 		};
 		63C345EE182AA1EA00B3D152 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E6B379699C3478E98464018 /* Pods.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
-				OTHER_CFLAGS = "-Wno-logical-op-parentheses ";
+				OTHER_CFLAGS = (
+					"-Wno-logical-op-parentheses",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = prefPane;
 			};

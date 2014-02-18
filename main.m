@@ -1,4 +1,5 @@
 #import "main.h"
+#import "YOLO.h"
 
 BOOL mdfind(NSString *app) {
     return [NSString stringWithFormat:@"/usr/bin/mdfind %@ kind:app", app].stdout.length;
