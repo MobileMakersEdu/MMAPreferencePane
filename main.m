@@ -76,7 +76,7 @@ BOOL mdfind(NSString *app) {
 }
 
 - (void)activate {
-    [@"/usr/bin/git config --global ui.color auto" exec];
+    [@"/usr/bin/git config --global color.ui auto" exec];
     [@"/usr/bin/git config --global push.default simple" exec];  // squelch warning and be forward thinking
     [@"/usr/bin/git config --global credential.helper cache" exec];
 
