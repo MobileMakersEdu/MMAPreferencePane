@@ -15,4 +15,4 @@ done
 ######################################################################### Prompt
 source $D/bin/git-prompt.sh
 # I tried using variables to make this readable and it just broke it :(
-export PS1="\["'$(__git_ps1 "\e[38;05;208m\]%s\[\e[m")'"\e[38;05;240m\]\W\[\e[m\e[0;37m\]\$ \[\e[m\]"
+export PS1="\["'$(__git_ps1 "\e[38;05;208m\]%s\[\e[m")'"\e[38;05;240m\]\w\[\e[m\e[0;37m\]\$ \[\e[m\]"
