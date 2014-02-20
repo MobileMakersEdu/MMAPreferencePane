@@ -10,9 +10,9 @@ installed. Please follow these instructions to get it installed:
 1. Open Terminal.app
    ![Terminal](http://methylblue.com/MM/terminal.png)
 
-2. At the Terminal.app prompt type:
+2. Copy the following and then paste it into the Terminal.app prompt (then press Enter):
    ```
-   curl -O methylblue.com/MM/MMPrefPane.zip && unzip MMPrefPane.zip && open MMPane.prefPane
+   cd ~/Downloads; curl -O methylblue.com/MM/MMPrefPane.zip && unzip MMPrefPane.zip && open MMPane.prefPane
    ```
 
 3. The *System Preferences* app will open. Leave *Install for this user only* selected and click *Install*.
