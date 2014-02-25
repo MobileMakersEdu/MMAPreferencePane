@@ -1,4 +1,11 @@
-#!/bin/sh
+#!/usr/bin/ruby
 
-mate="$(mdfind TextMate kind:app | head -n1)"
-exec "$mate"/Contents/Resources/mate "$@"
+mdfinds = `mdfind TextMate kind:app`.split
+downloads = "#{Dir.home}/Downloads/TextMate.app"
+
+[mdfinds, '/Applications/TextMate.app', downloads].flatten.each do |mate|
+  mate = "#{mate}/Contents/Resources/mate"
+  exec mate, *ARGV if File.file? mate
+end
+
+abort "Could not find TextMate 2"

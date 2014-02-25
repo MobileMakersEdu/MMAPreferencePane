@@ -1,4 +1,11 @@
-#!/bin/sh
+#!/usr/bin/ruby
 
-mate="$(mdfind GitX kind:app | head -n1)"
-exec "$mate"/Contents/Resources/gitx "$@"
+mdfinds = `mdfind GitX kind:app`.split
+downloads = "#{Dir.home}/Downloads/GitX.app"
+
+[mdfinds, '/Applications/GitX.app', downloads].flatten.each do |gitx|
+  gitx = "#{gitx}/Contents/Resources/gitx"
+  exec gitx, *ARGV if File.file? gitx
+end
+
+abort "Could not find GitX"

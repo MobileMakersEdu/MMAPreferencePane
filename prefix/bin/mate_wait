@@ -1,4 +1,3 @@
-#!/bin/sh
+#!/usr/bin/ruby
 
-mate="$(mdfind TextMate kind:app | head -n1)"
-exec "$mate"/Contents/Resources/mate -w "$@"
+exec "#{__FILE__}/../mate", "-w", *ARGV
