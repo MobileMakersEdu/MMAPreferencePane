@@ -1,24 +1,23 @@
 #import "main.h"
 #import "YOLO.h"
 
+#define MMBundlePathPlus(x) [self.bundle.bundlePath stringByAppendingPathComponent:x]
+
 BOOL mdfind(NSString *app) {
     return [NSString stringWithFormat:@"/usr/bin/mdfind %@ kind:app", app].stdout.length;
 }
 
 static void MMSyncPrefs(id domain) {
-    id py = [NSString stringWithFormat:@"from Foundation import CFPreferencesAppSynchronize\nCFPreferencesAppSynchronize('%@')", domain];
+    id fmt = @"from Foundation import CFPreferencesAppSynchronize\nCFPreferencesAppSynchronize('%@')";
+    id py = [NSString stringWithFormat:fmt, domain];
 
-    NSTask *task = [NSTask new];
-    task.launchPath = @"/usr/bin/python";
-    task.arguments = @[@"-c", py];
-    [task launch];
-    [task waitUntilExit];
+    [@[@"/usr/bin/python", @"-c", py] exec];
 }
 
 #define MMWritePrefs(...) { \
     NSTask *task = [NSTask new]; \
     task.launchPath = @"/usr/bin/defaults"; \
-    task.arguments = @[__VA_ARGS__]; \
+    task.arguments = @[@"write", __VA_ARGS__]; \
     [task launch]; \
     [task waitUntilExit]; \
 }
@@ -99,6 +98,8 @@ static void MMSyncPrefs(id domain) {
     [@"/usr/bin/git config --global push.default simple" exec];  // squelch warning and be forward thinking
     [@"/usr/bin/git config --global credential.helper cache" exec];
 
+    [@[@"/usr/bin/git", @"config", @"--global", @"core.excludesfile", MMBundlePathPlus(@"Contents/etc/gitignore")] exec];
+
     MMWritePrefs(@"com.apple.Terminal", @"Default Window Settings", @"MobileMakers");
     MMWritePrefs(@"com.apple.Terminal", @"Startup Window Settings", @"MobileMakers");
     MMSyncPrefs(@"com.apple.Terminal");
@@ -110,8 +111,9 @@ static void MMSyncPrefs(id domain) {
         [[[@"~/.bash_profile" append:@"\n\n"] append:sourceLine] append:@"\n"];
 
     [@"/usr/bin/killall Terminal" exec];
+    [@"/usr/bin/killall Xcode" exec];
 
-    id path = [self.bundle.bundlePath stringByAppendingPathComponent:@"Contents/Resources/MobileMakers.terminal"];
+    id path = MMBundlePathPlus(@"Contents/Resources/MobileMakers.terminal");
     [[NSString stringWithFormat:@"/usr/bin/open -g %@", path] exec];
 
     id err = nil;

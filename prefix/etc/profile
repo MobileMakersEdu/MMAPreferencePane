@@ -7,6 +7,8 @@ export GIT_EDITOR="$D/bin/mate_wait"
 #export GIT_EXTERNAL_DIFF="$D/bin/opendiff.sh"
 export PATH="$D"/bin:"$PATH"
 
+alias ..='cd ..'
+
 ##################################################################### Completion
 [ -d "$D/etc/completion.d" ] && for f in "$D"/etc/completion.d/*.$(basename $SHELL); do
     source $f

@@ -6,6 +6,23 @@
     args = [args subarrayWithRange:NSMakeRange(1, [args count] - 1)]
 
 
+@implementation NSArray (MM)
+
+- (void)exec {
+    @try {
+        NSTask *task = [NSTask new];
+        task.launchPath = self.firstObject;
+        task.arguments = self.skip(1);
+        [task launch];
+        [task waitUntilExit];
+    } @catch (id e) {
+        NSLog(@"MM: %@", e);
+    }
+}
+
+@end
+
+
 @implementation NSString (MM)
 
 - (void)exec {

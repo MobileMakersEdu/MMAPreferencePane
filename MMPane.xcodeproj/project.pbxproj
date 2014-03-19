@@ -19,7 +19,7 @@
 		6373DF29183C07CE00E866D1 /* MMRubyDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF1F183C07CE00E866D1 /* MMRubyDiagnostic.m */; };
 		6373DF2A183C07CE00E866D1 /* MMTextMateDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF20183C07CE00E866D1 /* MMTextMateDiagnostic.m */; };
 		6373DF2B183C07CE00E866D1 /* MMXcodeDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF21183C07CE00E866D1 /* MMXcodeDiagnostic.m */; };
-		6393B9C5182AE96D005161BA /* NSString+MM.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9C4182AE88D005161BA /* NSString+MM.m */; };
+		6393B9C5182AE96D005161BA /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9C4182AE88D005161BA /* Utils.m */; };
 		6393B9D0182B1E6B005161BA /* MMSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9CF182B1E6B005161BA /* MMSwitchView.m */; };
 		63A3BA1018B3D06C00C60A4E /* MobileMakers.terminal in Resources */ = {isa = PBXBuildFile; fileRef = 63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */; };
 		63C345E4182AA1EA00B3D152 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C345E3182AA1EA00B3D152 /* main.m */; };
@@ -43,7 +43,7 @@
 		6373DF1F183C07CE00E866D1 /* MMRubyDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMRubyDiagnostic.m; path = diagnostics/MMRubyDiagnostic.m; sourceTree = "<group>"; };
 		6373DF20183C07CE00E866D1 /* MMTextMateDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMTextMateDiagnostic.m; path = diagnostics/MMTextMateDiagnostic.m; sourceTree = "<group>"; };
 		6373DF21183C07CE00E866D1 /* MMXcodeDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMXcodeDiagnostic.m; path = diagnostics/MMXcodeDiagnostic.m; sourceTree = "<group>"; };
-		6393B9C4182AE88D005161BA /* NSString+MM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MM.m"; sourceTree = "<group>"; };
+		6393B9C4182AE88D005161BA /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		6393B9CF182B1E6B005161BA /* MMSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMSwitchView.m; sourceTree = "<group>"; };
 		63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MobileMakers.terminal; sourceTree = "<group>"; };
 		63C345DD182AA1EA00B3D152 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
@@ -97,7 +97,7 @@
 				63243095182AA29200828D43 /* main.xib */,
 				6324309A182AB24A00828D43 /* MMLED.m */,
 				6393B9CF182B1E6B005161BA /* MMSwitchView.m */,
-				6393B9C4182AE88D005161BA /* NSString+MM.m */,
+				6393B9C4182AE88D005161BA /* Utils.m */,
 				6373DF2C183C07D600E866D1 /* Diagnostics */,
 				63C345DD182AA1EA00B3D152 /* Info.plist */,
 				63243099182AB0B000828D43 /* MMPane.prefPane */,
@@ -137,7 +137,7 @@
 		63C345C6182AA1EA00B3D152 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Max Howell";
 			};
 			buildConfigurationList = 63C345C9182AA1EA00B3D152 /* Build configuration list for PBXProject "MMPane" */;
@@ -234,7 +234,7 @@
 				6373DF2A183C07CE00E866D1 /* MMTextMateDiagnostic.m in Sources */,
 				6373DF24183C07CE00E866D1 /* MMGitDiagnostic.m in Sources */,
 				6373DF22183C07CE00E866D1 /* MMCocoaPodsDiagnostic.m in Sources */,
-				6393B9C5182AE96D005161BA /* NSString+MM.m in Sources */,
+				6393B9C5182AE96D005161BA /* Utils.m in Sources */,
 				6373DF28183C07CE00E866D1 /* MMmmmmDiagnostic.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -315,7 +315,7 @@
 			baseConfigurationReference = 2E6B379699C3478E98464018 /* Pods.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
@@ -333,7 +333,7 @@
 			baseConfigurationReference = 2E6B379699C3478E98464018 /* Pods.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";

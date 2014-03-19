@@ -1,4 +1,5 @@
 @import PreferencePanes;
+#import "YOLO.h"
 
 #define MMErrorDomain @"MMErrorDomain"
 
@@ -23,6 +24,10 @@ enum MMErrorCode {
 - (NSArray *)lines;
 - (NSString *)strip;
 - (NSString *)append:(NSString *)contents;
+@end
+
+@interface NSArray (MM)
+- (void)exec;
 @end
 
 
