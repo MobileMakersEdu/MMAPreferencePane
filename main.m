@@ -35,6 +35,7 @@ static void MMSyncPrefs(id domain) {
     IBOutlet NSTextView *textView;
     IBOutlet MMSwitchView *bigSwitch;
     IBOutlet NSButton *refresh;
+    IBOutlet NSProgressIndicator *spinner;
 }
 
 - (void)mainViewDidLoad {
@@ -57,6 +58,8 @@ static void MMSyncPrefs(id domain) {
 }
 
 - (IBAction)check {
+    [spinner startAnimation:self];
+
     [@[mavericks, xcode, git, gitx, github, textmate, mmmmmm] makeObjectsPerformSelector:@selector(reset)];
     textView.string = @"";
 
@@ -91,6 +94,8 @@ static void MMSyncPrefs(id domain) {
 
     int state = [mmmmmmdiagnostic execute:nil] == NO ? NSOffState : NSOnState;
     [bigSwitch setState:state animate:YES];
+
+    [spinner stopAnimation:self];
 }
 
 - (void)activate {
