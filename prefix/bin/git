@@ -1,0 +1,7 @@
+#!/usr/bin/ruby
+
+if ARGV[0] == 'init' && Dir.pwd == Dir.home
+  abort "Refusing to create git repository in your home directory"
+end
+
+exec "/usr/bin/git", *ARGV

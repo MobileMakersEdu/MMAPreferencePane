@@ -7,19 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		631040421912A97E000797B1 /* sheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 631040411912A97E000797B1 /* sheet.xib */; };
+		631040451912BD03000797B1 /* GitX.tbz in Resources */ = {isa = PBXBuildFile; fileRef = 631040431912BD03000797B1 /* GitX.tbz */; };
+		631040491912E1EE000797B1 /* checks.m in Sources */ = {isa = PBXBuildFile; fileRef = 631040481912E1EE000797B1 /* checks.m */; };
 		63243096182AA29200828D43 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63243095182AA29200828D43 /* main.xib */; };
 		63243098182AA4E400828D43 /* MMPane.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63243097182AA4E400828D43 /* MMPane.xcassets */; };
 		6324309B182AB24A00828D43 /* MMLED.m in Sources */ = {isa = PBXBuildFile; fileRef = 6324309A182AB24A00828D43 /* MMLED.m */; };
-		6373DF22183C07CE00E866D1 /* MMCocoaPodsDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF18183C07CE00E866D1 /* MMCocoaPodsDiagnostic.m */; };
-		6373DF24183C07CE00E866D1 /* MMGitDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF1A183C07CE00E866D1 /* MMGitDiagnostic.m */; };
-		6373DF25183C07CE00E866D1 /* MMGitHubDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF1B183C07CE00E866D1 /* MMGitHubDiagnostic.m */; };
-		6373DF26183C07CE00E866D1 /* MMGitXDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF1C183C07CE00E866D1 /* MMGitXDiagnostic.m */; };
-		6373DF27183C07CE00E866D1 /* MMMavericksDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF1D183C07CE00E866D1 /* MMMavericksDiagnostic.m */; };
-		6373DF28183C07CE00E866D1 /* MMmmmmDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF1E183C07CE00E866D1 /* MMmmmmDiagnostic.m */; };
-		6373DF29183C07CE00E866D1 /* MMRubyDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF1F183C07CE00E866D1 /* MMRubyDiagnostic.m */; };
-		6373DF2A183C07CE00E866D1 /* MMTextMateDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF20183C07CE00E866D1 /* MMTextMateDiagnostic.m */; };
-		6373DF2B183C07CE00E866D1 /* MMXcodeDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6373DF21183C07CE00E866D1 /* MMXcodeDiagnostic.m */; };
-		6393B9C5182AE96D005161BA /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9C4182AE88D005161BA /* Utils.m */; };
+		6393B9C5182AE96D005161BA /* NSTask+Promise.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9C4182AE88D005161BA /* NSTask+Promise.m */; };
 		6393B9D0182B1E6B005161BA /* MMSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9CF182B1E6B005161BA /* MMSwitchView.m */; };
 		63A3BA1018B3D06C00C60A4E /* MobileMakers.terminal in Resources */ = {isa = PBXBuildFile; fileRef = 63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */; };
 		63C345E4182AA1EA00B3D152 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C345E3182AA1EA00B3D152 /* main.m */; };
@@ -30,20 +24,14 @@
 /* Begin PBXFileReference section */
 		2E6B379699C3478E98464018 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		42F294050E1046B48493AE71 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		631040411912A97E000797B1 /* sheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = sheet.xib; sourceTree = "<group>"; };
+		631040431912BD03000797B1 /* GitX.tbz */ = {isa = PBXFileReference; lastKnownFileType = file; path = GitX.tbz; sourceTree = "<group>"; };
+		631040481912E1EE000797B1 /* checks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = checks.m; sourceTree = "<group>"; };
 		63243095182AA29200828D43 /* main.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = main.xib; sourceTree = SOURCE_ROOT; };
 		63243097182AA4E400828D43 /* MMPane.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MMPane.xcassets; sourceTree = "<group>"; };
 		63243099182AB0B000828D43 /* MMPane.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MMPane.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
 		6324309A182AB24A00828D43 /* MMLED.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMLED.m; sourceTree = "<group>"; };
-		6373DF18183C07CE00E866D1 /* MMCocoaPodsDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCocoaPodsDiagnostic.m; path = diagnostics/MMCocoaPodsDiagnostic.m; sourceTree = "<group>"; };
-		6373DF1A183C07CE00E866D1 /* MMGitDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMGitDiagnostic.m; path = diagnostics/MMGitDiagnostic.m; sourceTree = "<group>"; };
-		6373DF1B183C07CE00E866D1 /* MMGitHubDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMGitHubDiagnostic.m; path = diagnostics/MMGitHubDiagnostic.m; sourceTree = "<group>"; };
-		6373DF1C183C07CE00E866D1 /* MMGitXDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMGitXDiagnostic.m; path = diagnostics/MMGitXDiagnostic.m; sourceTree = "<group>"; };
-		6373DF1D183C07CE00E866D1 /* MMMavericksDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMMavericksDiagnostic.m; path = diagnostics/MMMavericksDiagnostic.m; sourceTree = "<group>"; };
-		6373DF1E183C07CE00E866D1 /* MMmmmmDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMmmmmDiagnostic.m; path = diagnostics/MMmmmmDiagnostic.m; sourceTree = "<group>"; };
-		6373DF1F183C07CE00E866D1 /* MMRubyDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMRubyDiagnostic.m; path = diagnostics/MMRubyDiagnostic.m; sourceTree = "<group>"; };
-		6373DF20183C07CE00E866D1 /* MMTextMateDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMTextMateDiagnostic.m; path = diagnostics/MMTextMateDiagnostic.m; sourceTree = "<group>"; };
-		6373DF21183C07CE00E866D1 /* MMXcodeDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMXcodeDiagnostic.m; path = diagnostics/MMXcodeDiagnostic.m; sourceTree = "<group>"; };
-		6393B9C4182AE88D005161BA /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		6393B9C4182AE88D005161BA /* NSTask+Promise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTask+Promise.m"; sourceTree = "<group>"; };
 		6393B9CF182B1E6B005161BA /* MMSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMSwitchView.m; sourceTree = "<group>"; };
 		63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MobileMakers.terminal; sourceTree = "<group>"; };
 		63C345DD182AA1EA00B3D152 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
@@ -73,20 +61,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		6373DF2C183C07D600E866D1 /* Diagnostics */ = {
+		631040471912BD0D000797B1 /* Bundled */ = {
 			isa = PBXGroup;
 			children = (
-				6373DF1D183C07CE00E866D1 /* MMMavericksDiagnostic.m */,
-				6373DF21183C07CE00E866D1 /* MMXcodeDiagnostic.m */,
-				6373DF1A183C07CE00E866D1 /* MMGitDiagnostic.m */,
-				6373DF1C183C07CE00E866D1 /* MMGitXDiagnostic.m */,
-				6373DF1B183C07CE00E866D1 /* MMGitHubDiagnostic.m */,
-				6373DF1F183C07CE00E866D1 /* MMRubyDiagnostic.m */,
-				6373DF18183C07CE00E866D1 /* MMCocoaPodsDiagnostic.m */,
-				6373DF20183C07CE00E866D1 /* MMTextMateDiagnostic.m */,
-				6373DF1E183C07CE00E866D1 /* MMmmmmDiagnostic.m */,
+				63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */,
+				63E5A6CC18B3E23D00469346 /* MobileMakers.dvtcolortheme */,
+				631040431912BD03000797B1 /* GitX.tbz */,
 			);
-			name = Diagnostics;
+			name = Bundled;
 			sourceTree = "<group>";
 		};
 		63C345C5182AA1EA00B3D152 = {
@@ -95,15 +77,15 @@
 				63C345E2182AA1EA00B3D152 /* main.h */,
 				63C345E3182AA1EA00B3D152 /* main.m */,
 				63243095182AA29200828D43 /* main.xib */,
+				631040411912A97E000797B1 /* sheet.xib */,
+				631040481912E1EE000797B1 /* checks.m */,
 				6324309A182AB24A00828D43 /* MMLED.m */,
 				6393B9CF182B1E6B005161BA /* MMSwitchView.m */,
-				6393B9C4182AE88D005161BA /* Utils.m */,
-				6373DF2C183C07D600E866D1 /* Diagnostics */,
+				6393B9C4182AE88D005161BA /* NSTask+Promise.m */,
 				63C345DD182AA1EA00B3D152 /* Info.plist */,
 				63243099182AB0B000828D43 /* MMPane.prefPane */,
 				63243097182AA4E400828D43 /* MMPane.xcassets */,
-				63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */,
-				63E5A6CC18B3E23D00469346 /* MobileMakers.dvtcolortheme */,
+				631040471912BD0D000797B1 /* Bundled */,
 				2A60A4C198134B79A5244A32 /* Pods */,
 			);
 			sourceTree = "<group>";
@@ -163,9 +145,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				631040451912BD03000797B1 /* GitX.tbz in Resources */,
 				63243096182AA29200828D43 /* main.xib in Resources */,
 				63E5A6CD18B3E23D00469346 /* MobileMakers.dvtcolortheme in Resources */,
 				63243098182AA4E400828D43 /* MMPane.xcassets in Resources */,
+				631040421912A97E000797B1 /* sheet.xib in Resources */,
 				63A3BA1018B3D06C00C60A4E /* MobileMakers.terminal in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -223,19 +207,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6373DF2B183C07CE00E866D1 /* MMXcodeDiagnostic.m in Sources */,
-				6373DF26183C07CE00E866D1 /* MMGitXDiagnostic.m in Sources */,
 				6393B9D0182B1E6B005161BA /* MMSwitchView.m in Sources */,
-				6373DF29183C07CE00E866D1 /* MMRubyDiagnostic.m in Sources */,
-				6373DF25183C07CE00E866D1 /* MMGitHubDiagnostic.m in Sources */,
 				63C345E4182AA1EA00B3D152 /* main.m in Sources */,
-				6373DF27183C07CE00E866D1 /* MMMavericksDiagnostic.m in Sources */,
 				6324309B182AB24A00828D43 /* MMLED.m in Sources */,
-				6373DF2A183C07CE00E866D1 /* MMTextMateDiagnostic.m in Sources */,
-				6373DF24183C07CE00E866D1 /* MMGitDiagnostic.m in Sources */,
-				6373DF22183C07CE00E866D1 /* MMCocoaPodsDiagnostic.m in Sources */,
-				6393B9C5182AE96D005161BA /* Utils.m in Sources */,
-				6373DF28183C07CE00E866D1 /* MMmmmmDiagnostic.m in Sources */,
+				631040491912E1EE000797B1 /* checks.m in Sources */,
+				6393B9C5182AE96D005161BA /* NSTask+Promise.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,7 +249,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -305,7 +281,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
 			name = Release;

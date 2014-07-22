@@ -3,24 +3,27 @@
 
 #define MMBundlePathPlus(x) [self.bundle.bundlePath stringByAppendingPathComponent:x]
 
-BOOL mdfind(NSString *app) {
-    return [NSString stringWithFormat:@"/usr/bin/mdfind %@ kind:app", app].stdout.length;
+Promise *mdfind(NSString *app) {
+    return [NSTask:@[@"/usr/bin/mdfind", app, @"kind:app"]].promise;
 }
 
-static void MMSyncPrefs(id domain) {
+static Promise *MMSyncPrefs(id domain) {
     id fmt = @"from Foundation import CFPreferencesAppSynchronize\nCFPreferencesAppSynchronize('%@')";
     id py = [NSString stringWithFormat:fmt, domain];
-
-    [@[@"/usr/bin/python", @"-c", py] exec];
+    return [NSTask:@[@"/usr/bin/python", @"-c", py]].promise;
 }
 
-#define MMWritePrefs(...) { \
-    NSTask *task = [NSTask new]; \
-    task.launchPath = @"/usr/bin/defaults"; \
-    task.arguments = @[@"write", __VA_ARGS__]; \
-    [task launch]; \
-    [task waitUntilExit]; \
+static Promise *MMWritePrefs(NSArray *args) {
+    NSMutableArray *ma = [NSMutableArray arrayWithObjects:@"write", nil];
+    [ma addObjectsFromArray:args];
+
+    NSTask *task = [NSTask new];
+    task.launchPath = @"/usr/bin/defaults";
+    task.arguments = ma;
+    return task.promise;
 }
+
+#define MMWritePrefs(...) MMWritePrefs(@[__VA_ARGS__])
 
 
 
@@ -31,25 +34,33 @@ static void MMSyncPrefs(id domain) {
     IBOutlet MMLED *gitx;
     IBOutlet MMLED *github;
     IBOutlet MMLED *textmate;
-    IBOutlet MMLED *mmmmmm;
-    IBOutlet NSTextView *textView;
     IBOutlet MMSwitchView *bigSwitch;
     IBOutlet NSButton *refresh;
     IBOutlet NSProgressIndicator *spinner;
+
+    Promise *switcher;
+    Promise *checker;
+}
+
+- (NSString *)bashProfileLine {
+    id profile = [self.bundle.bundlePath stringByAppendingPathComponent:@"Contents/etc/profile"];
+    profile = [profile stringByReplacingOccurrencesOfString:@"~".stringByExpandingTildeInPath withString:@"~"];
+    return [NSString stringWithFormat:@"source %@", profile];
 }
 
 - (void)mainViewDidLoad {
-    textView.font = [NSFont systemFontOfSize:13];
-    [textView setAutomaticLinkDetectionEnabled:YES];
-
-    bigSwitch.state = [[[MMmmmmDiagnostic alloc] initWithBundle:self.bundle] execute:nil] ? NSOnState : NSOffState;
+    bigSwitch.state  = NSOffState;
     bigSwitch.target = self;
     bigSwitch.action = @selector(onSwitchToggled);
 
     refresh.target = self;
     refresh.action = @selector(check);
 
+    [spinner startAnimation:self];
     [self check];
+    checker.finally(^{
+        [spinner stopAnimation:self];
+    });
 }
 
 - (void)awakeFromNib {
@@ -58,122 +69,126 @@ static void MMSyncPrefs(id domain) {
 }
 
 - (IBAction)check {
-    [spinner startAnimation:self];
+    if (checker)
+        return;
 
-    [@[mavericks, xcode, git, gitx, github, textmate, mmmmmm] makeObjectsPerformSelector:@selector(reset)];
-    textView.string = @"";
+    [@[mavericks, xcode, git, gitx, github, textmate] makeObjectsPerformSelector:@selector(reset)];
 
-    MMmmmmDiagnostic *mmmmmmdiagnostic = [[MMmmmmDiagnostic alloc] initWithBundle:self.bundle];
+    id p1, p2, p3, p4, p5, p6;
 
-    @try {
-        [mavericks checkWith:[MMMavericksDiagnostic new]];
-        [xcode checkWith:[MMXcodeDiagnostic new]];
-        [git checkWith:[MMGitDiagnostic new]];
-        [gitx checkWith:[MMGitXDiagnostic new]];
-        [github checkWith:[MMGitHubDiagnostic new]];
-        [textmate checkWith:[MMTextMateDiagnostic new]];
-        [mmmmmm checkWith:mmmmmmdiagnostic];
-    }
-    @catch (NSError *e) {
-        NSMutableString *s = @"HOW TO BE GREEN:\n".mutableCopy;
-        id ss = e.userInfo[NSLocalizedDescriptionKey]
-            ?: e.code == MMDiagnosticFailedAmber
-                ? @"Please turn the big switch on. You may also need to open Xcode and accept its license."
-                : @"Unexpected error, please email max@mobilemakers.co";
-        [s appendString:ss];
-        ss = e.userInfo[NSLocalizedRecoverySuggestionErrorKey];
-        if (ss) {
-            [s appendString:@", visit this URL:\n\n"];
-            [s appendString:ss];
-        }
-        textView.string = s;
-        [textView setEnabledTextCheckingTypes:NSTextCheckingTypeLink];
-        [textView checkTextInDocument:nil];
-        textView.string = s;
-    }
+    [mavericks check:p1 = MMCheckMavericks()];
+    [xcode check:p2 = MMCheckXcode()];
+    [git check:p3 = MMCheckGit()];
+    [gitx check:p4 = MMCheckGitX()];
+    [github check:p5 = MMCheckGitHub()];
+    [textmate check:p6 = MMCheckTextMate()];
 
-    int state = [mmmmmmdiagnostic execute:nil] == NO ? NSOffState : NSOnState;
-    [bigSwitch setState:state animate:YES];
-
-    [spinner stopAnimation:self];
+    checker = [Promise when:@[p1, p2, p3, p4, p5, p6]].finally(^{
+        checker = nil;
+    });
 }
 
 - (void)activate {
-    [@"/usr/bin/git config --global color.ui auto" exec];
-    [@"/usr/bin/git config --global push.default simple" exec];  // squelch warning and be forward thinking
-    [@"/usr/bin/git config --global credential.helper cache" exec];
+    if (switcher)
+        return;
 
-    [@[@"/usr/bin/git", @"config", @"--global", @"core.excludesfile", MMBundlePathPlus(@"Contents/etc/gitignore")] exec];
+    id terminalPromises = @[
+        [NSTask:@[@"/usr/bin/open", @"-g", MMBundlePathPlus(@"Contents/Resources/MobileMakers.terminal")]].promise,
+        MMWritePrefs(@"com.apple.Terminal", @"Default Window Settings", @"MobileMakers"),
+        MMWritePrefs(@"com.apple.Terminal", @"Startup Window Settings", @"MobileMakers")
+    ];
 
-    MMWritePrefs(@"com.apple.Terminal", @"Default Window Settings", @"MobileMakers");
-    MMWritePrefs(@"com.apple.Terminal", @"Startup Window Settings", @"MobileMakers");
-    MMSyncPrefs(@"com.apple.Terminal");
+    id xcodePromises = @[
+        dispatch_promise(^id{
+            id err = nil;
+            id mgr = [NSFileManager defaultManager];
+            id dst = @"~/Library/Developer/Xcode/UserData/FontAndColorThemes".stringByExpandingTildeInPath;
+            id src = [self.bundle.bundlePath stringByAppendingString:@"/Contents/Resources/MobileMakers.dvtcolortheme"];
+            [mgr createDirectoryAtPath:dst withIntermediateDirectories:YES attributes:nil error:nil];
+            [mgr copyItemAtPath:src toPath:[dst stringByAppendingString:@"/MobileMakers.dvtcolortheme"] error:&err];
+            if ([err code] == 516 || !err)
+                return MMWritePrefs(@"com.apple.dt.Xcode", @"DVTFontAndColorCurrentTheme", @"MobileMakers.dvtcolortheme");
+            return nil;
+        }),
+        MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextEditorTrimWhitespaceOnlyLines", @"-bool", @"YES"),
+        MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextShowLineNumbers", @"-bool", @"YES"),
+        MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextEditorTrimTrailingWhitespace", @"-bool", @"YES"),
+    ];
 
-    NSString *sourceLine = [[MMmmmmDiagnostic alloc] initWithBundle:self.bundle].bashProfileSourceLine;
-    NSMutableString *bashProfile = @"~/.bash_profile".read.strip.mutableCopy;
+    id gitxPromise = [NSTask:@[@"/usr/bin/tar",
+        @"xf", MMBundlePathPlus(@"/Contents/Resources/GitX.tbz"),
+        @"-C", @"~/Applications".stringByExpandingTildeInPath,
+    ]].promise;
 
-    if (![bashProfile.lines containsObject:sourceLine])
-        [[[@"~/.bash_profile" append:@"\n\n"] append:sourceLine] append:@"\n"];
+    // doing these sequentially or git freaks out
+    id gitPromise = [NSTask:@"/usr/bin/git config --global color.ui auto"].promise.then(^{
+        return [NSTask:@"/usr/bin/git config --global push.default simple"].promise;
+    }).then(^{
+        return [NSTask:@"/usr/bin/git config --global credential.helper cache"].promise;
+    }).then(^{
+        id args = @[@"/usr/bin/git", @"config", @"--global", @"core.excludesfile", MMBundlePathPlus(@"Contents/etc/gitignore")];
+        return [NSTask:args].promise;
+    });
 
-    [@"/usr/bin/killall Terminal" exec];
-    [@"/usr/bin/killall Xcode" exec];
+    id promises = @[
+        gitxPromise,
+        gitPromise,
+        [Promise when:terminalPromises].then(^{
+            return MMSyncPrefs(@"com.apple.Terminal");
+        }),
+        [Promise when:xcodePromises].then(^{
+            return MMSyncPrefs(@"com.apple.dt.Xcode");
+        })
+    ];
 
-    id path = MMBundlePathPlus(@"Contents/Resources/MobileMakers.terminal");
-    [[NSString stringWithFormat:@"/usr/bin/open -g %@", path] exec];
+    NSString *bashProfilePath = @"~/.bash_profile".stringByExpandingTildeInPath;
 
-    id err = nil;
-    id mgr = [NSFileManager defaultManager];
-    id dst = @"~/Library/Developer/Xcode/UserData/FontAndColorThemes".stringByExpandingTildeInPath;
-    id src = [self.bundle.bundlePath stringByAppendingString:@"/Contents/Resources/MobileMakers.dvtcolortheme"];
-    [mgr createDirectoryAtPath:dst withIntermediateDirectories:YES attributes:nil error:nil];
-    [mgr copyItemAtPath:src toPath:[dst stringByAppendingString:@"/MobileMakers.dvtcolortheme"] error:&err];
-    if (!err || [err code] == 516) {
-        MMWritePrefs(@"com.apple.dt.Xcode", @"DVTFontAndColorCurrentTheme", @"MobileMakers.dvtcolortheme");
-        MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextEditorTrimWhitespaceOnlyLines", @"-bool", @"YES");
-        MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextShowLineNumbers", @"-bool", @"YES");
-        MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextEditorTrimTrailingWhitespace", @"-bool", @"YES");
-        MMSyncPrefs(@"com.apple.dt.Xcode");
-    } else {
-        NSLog(@"%@", err);
-    }
+    [spinner startAnimation:self];
+    bigSwitch.enabled = NO;
+
+    switcher = [Promise when:promises].then(^{
+        return [NSString stringWithContentsOfFile:bashProfilePath];
+    }).then(^(NSString *contents) {
+        if (!contents.split(@"\n").chuzzle.has(self.bashProfileLine)) {
+            contents = [contents stringByAppendingFormat:@"\n\n%@\n", self.bashProfileLine];
+            [contents writeToFile:bashProfilePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        }
+    }).then(^{
+        [self check];
+        return checker;
+    }).catch(^(NSError *error){
+        [spinner stopAnimation:self];
+        [[NSAlert alertWithError:error] runModal];
+        [bigSwitch setState:NSOffState animate:YES];
+    }).finally(^{
+        bigSwitch.enabled = YES;
+        [spinner stopAnimation:self];
+        switcher = nil;
+    });
 }
 
 - (void)deactivate {
-    NSString *sourceLine = [[MMmmmmDiagnostic alloc] initWithBundle:self.bundle].bashProfileSourceLine;
-    NSMutableString *bashProfile = @"~/.bash_profile".read.strip.mutableCopy;
-    NSMutableArray *lines = bashProfile.lines.mutableCopy;
+    if (switcher)
+        return;
 
-    NSUInteger ii = [lines indexOfObject:sourceLine];
-    if (ii != NSNotFound) {
-        [lines removeObjectAtIndex:ii];
-        id path = [@"~/.bash_profile" stringByExpandingTildeInPath];
-        id text = [lines componentsJoinedByString:@"\n"].strip;
-        [text writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
-    }
+    NSString *path = @"~/.bash_profile".stringByExpandingTildeInPath;
+    switcher = [NSString stringWithContentsOfFile:path].then(^(NSString *bashProfile){
+        NSMutableArray *lines = bashProfile.split(@"\n").chuzzle.mutableCopy;
+        [lines removeObject:self.bashProfileLine];
+        [lines.join(@"\n") writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    }).finally(^{
+        switcher = nil;
+    });
 }
 
-BOOL running = NO;
-
 - (IBAction)onSwitchToggled {
-    if (running)
+    if (switcher)
         return;
 
     if (bigSwitch.state == NSOnState) {
-        running = YES;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            @try {
-                [self activate];
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [self check];
-                }];
-            } @finally {
-                running = NO;
-            }
-        });
-    } else {
+        [self activate];
+    } else
         [self deactivate];
-        [self check];
-    }
 }
 
 @end

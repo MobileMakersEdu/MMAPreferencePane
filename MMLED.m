@@ -41,16 +41,11 @@
 	[[NSGraphicsContext currentContext] restoreGraphicsState];
 }
 
-- (void)checkWith:(id<MMDiagnostic>)diagnostic {
-    NSError *error = nil;
-    BOOL ok = [diagnostic execute:&error];
-
-    [self setNeedsDisplay:YES];
-
-    if (ok) {
+- (void)check:(Promise *)diagnostic {
+    diagnostic.then(^{
         fill = NSColorGreenFill;
         stroke = NSColorGreenStroke;
-    } else {
+    }).catch(^(NSError *error){
         if (error.code == MMDiagnosticFailedAmber) {
             fill = NSColorAmberFill;
             stroke = NSColorAmberStroke;
@@ -58,11 +53,11 @@
             fill = NSColorRedFill;
             stroke = NSColorRedStroke;
         }
-        if (error)
-            @throw error;
-        else
-            @throw [NSError errorWithDomain:MMErrorDomain code:MMDiagnosticFailedRed userInfo:nil];
-    }
+
+        return error;
+    }).finally(^{
+        [self setNeedsDisplay:YES];
+    });
 }
 
 @end
