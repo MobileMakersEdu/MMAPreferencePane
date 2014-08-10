@@ -152,7 +152,7 @@ static Promise *MMWritePrefs(NSArray *args) {
     bigSwitch.enabled = NO;
 
     switcher = [Promise when:promises].then(^{
-        return [NSString stringWithContentsOfFile:bashProfilePath];
+        return [NSString pmk_stringWithContentsOfFile:bashProfilePath];
     }).then(^(NSString *contents) {
         if (!contents.split(@"\n").chuzzle.has(self.bashProfileLine)) {
             contents = [contents stringByAppendingFormat:@"\n\n%@\n", self.bashProfileLine];
@@ -177,7 +177,7 @@ static Promise *MMWritePrefs(NSArray *args) {
         return;
 
     NSString *path = @"~/.bash_profile".stringByExpandingTildeInPath;
-    switcher = [NSString stringWithContentsOfFile:path].then(^(NSString *bashProfile){
+    switcher = [NSString pmk_stringWithContentsOfFile:path].then(^(NSString *bashProfile){
         NSMutableArray *lines = bashProfile.split(@"\n").chuzzle.mutableCopy;
         [lines removeObject:self.bashProfileLine];
         [lines.join(@"\n") writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
@@ -194,6 +194,22 @@ static Promise *MMWritePrefs(NSArray *args) {
         [self activate];
     } else
         [self deactivate];
+}
+
+@end
+
+
+@implementation NSString (MM)
+
++ (Promise *)pmk_stringWithContentsOfFile:(NSString *)path {
+    return dispatch_promise(^{
+        id err;
+        id str = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
+        if (err)
+            @throw err;
+        else
+            return str ?: @"";
+    });
 }
 
 @end

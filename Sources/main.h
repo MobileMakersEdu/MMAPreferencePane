@@ -20,8 +20,7 @@ enum MMAErrorCode {
 @end
 
 @interface NSString (MM)
-- (BOOL)exists;
-+ (Promise *)stringWithContentsOfFile:(NSString *)path;
++ (Promise *)pmk_stringWithContentsOfFile:(NSString *)path;
 @end
 
 @interface MMASwitchView : NSControl
