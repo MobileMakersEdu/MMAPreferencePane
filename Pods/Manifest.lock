@@ -1,0 +1,45 @@
+PODS:
+  - ChuzzleKit (1.0.4)
+  - PromiseKit/Promise (0.9.14.3)
+  - PromiseKit/When (0.9.14.3):
+    - PromiseKit/Promise
+  - YOLOKit/base (11)
+  - YOLOKit/flatten (11):
+    - YOLOKit/base
+  - YOLOKit/has (11):
+    - YOLOKit/base
+  - YOLOKit/join (11):
+    - YOLOKit/base
+    - YOLOKit/pluck
+  - YOLOKit/last (11):
+    - YOLOKit/base
+    - YOLOKit/slice
+  - YOLOKit/map (11):
+    - YOLOKit/base
+  - YOLOKit/pluck (11):
+    - YOLOKit/base
+  - YOLOKit/skip (11):
+    - YOLOKit/base
+    - YOLOKit/last
+  - YOLOKit/slice (11):
+    - YOLOKit/base
+  - YOLOKit/split (11):
+    - YOLOKit/base
+
+DEPENDENCIES:
+  - ChuzzleKit
+  - PromiseKit/Promise
+  - PromiseKit/When
+  - YOLOKit/flatten
+  - YOLOKit/has
+  - YOLOKit/join
+  - YOLOKit/map
+  - YOLOKit/skip
+  - YOLOKit/split
+
+SPEC CHECKSUMS:
+  ChuzzleKit: b47a96cb59dfb0b972cd539b8cc1e66c97b20f42
+  PromiseKit: 2eba66fea7b3f7cdb1143f1659ee49125bbb145c
+  YOLOKit: e83d381f83f33f2b66abf6fe0249fca57b05a541
+
+COCOAPODS: 0.33.1
