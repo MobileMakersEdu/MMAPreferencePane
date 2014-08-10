@@ -29,8 +29,8 @@
 		631040481912E1EE000797B1 /* checks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = checks.m; path = ../Sources/checks.m; sourceTree = SOURCE_ROOT; };
 		63243095182AA29200828D43 /* main.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = main.xib; path = ../Resources/main.xib; sourceTree = SOURCE_ROOT; };
 		63243097182AA4E400828D43 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../Resources/Images.xcassets; sourceTree = "<group>"; };
-		63243099182AB0B000828D43 /* MMPane.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MMPane.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
 		6324309A182AB24A00828D43 /* MMALED.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMALED.m; path = ../Sources/MMALED.m; sourceTree = SOURCE_ROOT; };
+		63697F1E199736550064AE5D /* MM.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MM.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
 		6393B9C4182AE88D005161BA /* NSTask+Promise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTask+Promise.m"; path = "../Sources/NSTask+Promise.m"; sourceTree = SOURCE_ROOT; };
 		6393B9CF182B1E6B005161BA /* MMASwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMASwitchView.m; path = ../Sources/MMASwitchView.m; sourceTree = SOURCE_ROOT; };
 		63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = MobileMakers.terminal; path = ../Resources/MobileMakers.terminal; sourceTree = SOURCE_ROOT; };
@@ -55,9 +55,9 @@
 		2A60A4C198134B79A5244A32 /* … */ = {
 			isa = PBXGroup;
 			children = (
+				63697F1E199736550064AE5D /* MM.prefPane */,
 				46EE87C483B748B3B4388FF6 /* Pods.xcconfig */,
 				11B220912D8C4D5DA67A4B91 /* libPods.a */,
-				63243099182AB0B000828D43 /* MMPane.prefPane */,
 				63C345DD182AA1EA00B3D152 /* Info.plist */,
 			);
 			name = "…";
@@ -93,9 +93,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		63C345CF182AA1EA00B3D152 /* MMPane */ = {
+		63C345CF182AA1EA00B3D152 /* MM */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 63C345EC182AA1EA00B3D152 /* Build configuration list for PBXNativeTarget "MMPane" */;
+			buildConfigurationList = 63C345EC182AA1EA00B3D152 /* Build configuration list for PBXNativeTarget "MM" */;
 			buildPhases = (
 				AEA3FF6E7F494F69A31CE619 /* Check Pods Manifest.lock */,
 				63C345CA182AA1EA00B3D152 /* Sources */,
@@ -108,9 +108,9 @@
 			);
 			dependencies = (
 			);
-			name = MMPane;
+			name = MM;
 			productName = MMPane;
-			productReference = 63243099182AB0B000828D43 /* MMPane.prefPane */;
+			productReference = 63697F1E199736550064AE5D /* MM.prefPane */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -135,7 +135,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				63C345CF182AA1EA00B3D152 /* MMPane */,
+				63C345CF182AA1EA00B3D152 /* MM */,
 			);
 		};
 /* End PBXProject section */
@@ -334,7 +334,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		63C345EC182AA1EA00B3D152 /* Build configuration list for PBXNativeTarget "MMPane" */ = {
+		63C345EC182AA1EA00B3D152 /* Build configuration list for PBXNativeTarget "MM" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				63C345ED182AA1EA00B3D152 /* Debug */,
