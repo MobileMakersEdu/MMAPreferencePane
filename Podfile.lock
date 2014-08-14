@@ -1,7 +1,7 @@
 PODS:
-  - ChuzzleKit (1.0.4)
-  - PromiseKit/Promise (0.9.14.3)
-  - PromiseKit/When (0.9.14.3):
+  - ChuzzleKit (1.0.6)
+  - PromiseKit/Promise (0.9.15.3)
+  - PromiseKit/When (0.9.15.3):
     - PromiseKit/Promise
   - YOLOKit/base (11)
   - YOLOKit/flatten (11):
@@ -38,8 +38,8 @@ DEPENDENCIES:
   - YOLOKit/split
 
 SPEC CHECKSUMS:
-  ChuzzleKit: b47a96cb59dfb0b972cd539b8cc1e66c97b20f42
-  PromiseKit: 2eba66fea7b3f7cdb1143f1659ee49125bbb145c
+  ChuzzleKit: baeaabc3f09edbc56bbf776993afe7953286116f
+  PromiseKit: 5ae80a1d3415e1a42fe6605e8c963b08852d0144
   YOLOKit: e83d381f83f33f2b66abf6fe0249fca57b05a541
 
 COCOAPODS: 0.33.1

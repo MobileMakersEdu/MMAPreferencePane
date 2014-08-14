@@ -1,6 +1,10 @@
 # Acknowledgements
 This application makes use of the following third party libraries:
 
+## ChuzzleKit
+
+This text to make CocoaPods happy.
+
 ## PromiseKit
 
 Copyright 2014 Max Howell <mxcl@me.com>

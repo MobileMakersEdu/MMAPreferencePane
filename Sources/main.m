@@ -63,7 +63,7 @@ static Promise *MMWritePrefs(NSArray *args) {
     });
 
     NSString *path = @"~/.bash_profile".stringByExpandingTildeInPath;
-    NSString *contents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    NSString *contents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil] ?: @"";
     NSArray *lines = contents.split(@"\n").chuzzle;
     bigSwitch.state = lines.has(self.bashProfileLine) ? NSOnState : NSOffState;
 }

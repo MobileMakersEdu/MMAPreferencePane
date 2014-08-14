@@ -10,19 +10,19 @@
 #define COCOAPODS_POD_AVAILABLE_ChuzzleKit
 #define COCOAPODS_VERSION_MAJOR_ChuzzleKit 1
 #define COCOAPODS_VERSION_MINOR_ChuzzleKit 0
-#define COCOAPODS_VERSION_PATCH_ChuzzleKit 4
+#define COCOAPODS_VERSION_PATCH_ChuzzleKit 6
 
 // PromiseKit/Promise
 #define COCOAPODS_POD_AVAILABLE_PromiseKit_Promise
 #define COCOAPODS_VERSION_MAJOR_PromiseKit_Promise 0
 #define COCOAPODS_VERSION_MINOR_PromiseKit_Promise 9
-#define COCOAPODS_VERSION_PATCH_PromiseKit_Promise 14
+#define COCOAPODS_VERSION_PATCH_PromiseKit_Promise 15
 
 // PromiseKit/When
 #define COCOAPODS_POD_AVAILABLE_PromiseKit_When
 #define COCOAPODS_VERSION_MAJOR_PromiseKit_When 0
 #define COCOAPODS_VERSION_MINOR_PromiseKit_When 9
-#define COCOAPODS_VERSION_PATCH_PromiseKit_When 14
+#define COCOAPODS_VERSION_PATCH_PromiseKit_When 15
 
 // YOLOKit/base
 #define COCOAPODS_POD_AVAILABLE_YOLOKit_base
