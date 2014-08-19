@@ -5,6 +5,10 @@ This application makes use of the following third party libraries:
 
 This text to make CocoaPods happy.
 
+## OMGHTTPURLRQ
+
+This text or CocoaPods throws a fit
+
 ## PromiseKit
 
 Copyright 2014 Max Howell <mxcl@me.com>
