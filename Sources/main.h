@@ -46,3 +46,10 @@ Promise *MMACheckGitX();
 Promise *MMACheckTextMate();
 
 Promise *mdfind(NSString *app);
+
+
+@interface NSURLConnection (MMA)
++ (Promise *)download:(NSString *)urlString;
+@end
+
+#define MMAApplicationsDirectory (@"~/Applications".stringByExpandingTildeInPath)

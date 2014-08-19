@@ -33,10 +33,20 @@ Promise *MMACheckGit() {
 }
 
 Promise *MMACheckGitX() {
+    // checking where we put it as otherwise Spotlight is too slow for us
+    id path = [MMAApplicationsDirectory stringByAppendingPathComponent:@"GitX.app"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+        return [Promise promiseWithValue:path];
+
     return mdfind(@"GitX");
 }
 
 Promise *MMACheckTextMate() {
+    // checking where we put it as otherwise Spotlight is too slow for us
+    id path = [MMAApplicationsDirectory stringByAppendingPathComponent:@"TextMate.app"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+        return [Promise promiseWithValue:path];
+
     return mdfind(@"TextMate");
 }
 

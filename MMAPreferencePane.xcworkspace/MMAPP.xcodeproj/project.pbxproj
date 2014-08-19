@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		45DF476BFF944F3FB8682280 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11B220912D8C4D5DA67A4B91 /* libPods.a */; };
 		631040421912A97E000797B1 /* sheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 631040411912A97E000797B1 /* sheet.xib */; };
-		631040451912BD03000797B1 /* GitX.tbz in Resources */ = {isa = PBXBuildFile; fileRef = 631040431912BD03000797B1 /* GitX.tbz */; };
 		631040491912E1EE000797B1 /* checks.m in Sources */ = {isa = PBXBuildFile; fileRef = 631040481912E1EE000797B1 /* checks.m */; };
 		63243096182AA29200828D43 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63243095182AA29200828D43 /* main.xib */; };
 		63243098182AA4E400828D43 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63243097182AA4E400828D43 /* Images.xcassets */; };
@@ -25,7 +24,6 @@
 		11B220912D8C4D5DA67A4B91 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		46EE87C483B748B3B4388FF6 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = ../Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		631040411912A97E000797B1 /* sheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = sheet.xib; path = ../Resources/sheet.xib; sourceTree = SOURCE_ROOT; };
-		631040431912BD03000797B1 /* GitX.tbz */ = {isa = PBXFileReference; lastKnownFileType = file; name = GitX.tbz; path = ../Resources/GitX.tbz; sourceTree = SOURCE_ROOT; };
 		631040481912E1EE000797B1 /* checks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = checks.m; path = ../Sources/checks.m; sourceTree = SOURCE_ROOT; };
 		63243095182AA29200828D43 /* main.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = main.xib; path = ../Resources/main.xib; sourceTree = SOURCE_ROOT; };
 		63243097182AA4E400828D43 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../Resources/Images.xcassets; sourceTree = "<group>"; };
@@ -68,7 +66,6 @@
 			children = (
 				63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */,
 				63E5A6CC18B3E23D00469346 /* MobileMakers.dvtcolortheme */,
-				631040431912BD03000797B1 /* GitX.tbz */,
 			);
 			name = Bundled;
 			sourceTree = "<group>";
@@ -145,7 +142,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				631040451912BD03000797B1 /* GitX.tbz in Resources */,
 				63243096182AA29200828D43 /* main.xib in Resources */,
 				63E5A6CD18B3E23D00469346 /* MobileMakers.dvtcolortheme in Resources */,
 				63243098182AA4E400828D43 /* Images.xcassets in Resources */,

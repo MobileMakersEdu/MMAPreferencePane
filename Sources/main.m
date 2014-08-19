@@ -1,10 +1,15 @@
+#import <Chuzzle.h>
 #import "main.h"
-#import "YOLO.h"
+#import <YOLO.h>
 
-#define MMBundlePathPlus(x) [self.bundle.bundlePath stringByAppendingPathComponent:x]
+#define MMABashProfileContainsSourceLine [contents.split(@"\n").chuzzle containsObject:self.bashProfileLine]
+#define MMABundlePathPlus(x) [self.bundle.bundlePath stringByAppendingPathComponent:x]
 
 Promise *mdfind(NSString *app) {
-    return [NSTask:@[@"/usr/bin/mdfind", app, @"kind:app"]].promise;
+    return [NSTask:@[@"/usr/bin/mdfind", app, @"kind:app"]].promise.then(^(NSString *stdout){
+        if (!stdout.chuzzle)
+            @throw [NSString stringWithFormat:@"%@ not found", app];
+    });
 }
 
 static Promise *MMSyncPrefs(id domain) {
@@ -64,8 +69,7 @@ static Promise *MMWritePrefs(NSArray *args) {
 
     NSString *path = @"~/.bash_profile".stringByExpandingTildeInPath;
     NSString *contents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil] ?: @"";
-    NSArray *lines = contents.split(@"\n").chuzzle;
-    bigSwitch.state = lines.has(self.bashProfileLine) ? NSOnState : NSOffState;
+    bigSwitch.state = MMABashProfileContainsSourceLine ? NSOnState : NSOffState;
 }
 
 - (void)awakeFromNib {
@@ -97,12 +101,21 @@ static Promise *MMWritePrefs(NSArray *args) {
     if (switcher)
         return;
 
-    id terminalPromises = @[
-        [NSTask:@[@"/usr/bin/open", @"-g", MMBundlePathPlus(@"Contents/Resources/MobileMakers.terminal")]].promise,
-        MMWritePrefs(@"com.apple.Terminal", @"Default Window Settings", @"MobileMakers"),
-        MMWritePrefs(@"com.apple.Terminal", @"Startup Window Settings", @"MobileMakers")
-    ];
+    dispatch_queue_t const bgq = dispatch_get_global_queue(0, 0);
 
+    id terminalPromises = dispatch_promise(^{
+        id args = @[@"/usr/bin/defaults", @"read", @"com.apple.Terminal", @"Default Window Settings"];
+        [NSTask:args].promise.then(^(id stdout){
+            if ([stdout isEqual:@"MobileMakers"])
+                return [Promise promiseWithValue:@YES];
+            id promises = @[
+                [NSTask:@[@"/usr/bin/open", @"-g", MMABundlePathPlus(@"Contents/Resources/MobileMakers.terminal")]].promise,
+                MMWritePrefs(@"com.apple.Terminal", @"Default Window Settings", @"MobileMakers"),
+                MMWritePrefs(@"com.apple.Terminal", @"Startup Window Settings", @"MobileMakers")
+            ];
+            return [Promise when:promises];
+        });
+    });
     id xcodePromises = @[
         dispatch_promise(^id{
             id err = nil;
@@ -120,10 +133,34 @@ static Promise *MMWritePrefs(NSArray *args) {
         MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextEditorTrimTrailingWhitespace", @"-bool", @"YES"),
     ];
 
-    id gitxPromise = [NSTask:@[@"/usr/bin/tar",
-        @"xf", MMBundlePathPlus(@"/Contents/Resources/GitX.tbz"),
-        @"-C", @"~/Applications".stringByExpandingTildeInPath,
-    ]].promise;
+    id gitxPromise = MMACheckGitX().catch(^{
+        return [NSURLConnection download:@"http://builds.phere.net/GitX/development/GitX-dev.dmg"].then(^(NSString *tmpPath){
+            return [NSTask:@[@"/usr/bin/hdiutil", @"mount", tmpPath]].promise;
+        }).thenOn(bgq, ^(NSString *stdout){
+            NSString *ln = stdout.split(@"\n").lastObject;
+            NSUInteger const start = [ln rangeOfString:@"/Volumes"].location;
+            NSString *mountPath = [[ln substringFromIndex:start] stringByAppendingPathComponent:@"GitX.app"];
+
+            NSString *toPath = [MMAApplicationsDirectory stringByAppendingPathComponent:@"GitX.app"];
+
+            id err = nil;
+            [[NSFileManager defaultManager] copyItemAtPath:mountPath toPath:toPath error:&err];
+
+            NSTask *task = [NSTask:@[@"/usr/bin/hdiutil", @"unmount", mountPath]];
+            [task launch];
+            [task waitUntilExit];
+
+            if (err) @throw err;
+        });
+    });
+
+    id textMatePromise = MMACheckTextMate().catch(^{
+        return [NSURLConnection download:@"https://api.textmate.org/downloads/release"].thenOn(bgq, ^(NSString *tmpPath){
+            id dst = @"~/Applications".stringByExpandingTildeInPath;
+            [[NSFileManager defaultManager] createDirectoryAtPath:dst withIntermediateDirectories:NO attributes:nil error:nil];
+            return [NSTask:@[@"/usr/bin/tar", @"xjf", tmpPath, @"-C", dst]].promise;
+        });
+    });
 
     // doing these sequentially or git freaks out
     id gitPromise = [NSTask:@"/usr/bin/git config --global color.ui auto"].promise.then(^{
@@ -131,11 +168,12 @@ static Promise *MMWritePrefs(NSArray *args) {
     }).then(^{
         return [NSTask:@"/usr/bin/git config --global credential.helper cache"].promise;
     }).then(^{
-        id args = @[@"/usr/bin/git", @"config", @"--global", @"core.excludesfile", MMBundlePathPlus(@"Contents/etc/gitignore")];
+        id args = @[@"/usr/bin/git", @"config", @"--global", @"core.excludesfile", MMABundlePathPlus(@"Contents/etc/gitignore")];
         return [NSTask:args].promise;
     });
 
     id promises = @[
+        textMatePromise,
         gitxPromise,
         gitPromise,
         [Promise when:terminalPromises].then(^{
@@ -152,15 +190,15 @@ static Promise *MMWritePrefs(NSArray *args) {
     bigSwitch.enabled = NO;
 
     switcher = [Promise when:promises].then(^{
+        [self check];
+        return checker;
+    }).then(^{
         return [NSString pmk_stringWithContentsOfFile:bashProfilePath];
     }).then(^(NSString *contents) {
-        if (!contents.split(@"\n").chuzzle.has(self.bashProfileLine)) {
+        if (!MMABashProfileContainsSourceLine) {
             contents = [contents stringByAppendingFormat:@"\n\n%@\n", self.bashProfileLine];
             [contents writeToFile:bashProfilePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
         }
-    }).then(^{
-        [self check];
-        return checker;
     }).catch(^(NSError *error){
         [spinner stopAnimation:self];
         [[NSAlert alertWithError:error] runModal];
@@ -178,7 +216,7 @@ static Promise *MMWritePrefs(NSArray *args) {
 
     NSString *path = @"~/.bash_profile".stringByExpandingTildeInPath;
     switcher = [NSString pmk_stringWithContentsOfFile:path].then(^(NSString *bashProfile){
-        NSMutableArray *lines = bashProfile.split(@"\n").chuzzle.mutableCopy;
+        NSMutableArray *lines = [NSMutableArray arrayWithArray:bashProfile.split(@"\n").chuzzle];
         [lines removeObject:self.bashProfileLine];
         [lines.join(@"\n") writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
     }).finally(^{
@@ -209,6 +247,25 @@ static Promise *MMWritePrefs(NSArray *args) {
             @throw err;
         else
             return str ?: @"";
+    });
+}
+
+@end
+
+
+
+@implementation NSURLConnection (MMA)
+
++ (Promise *)download:(NSString *)url {
+    id path = [NSURL URLWithString:url].pathComponents.lastObject;
+    path = [@"/tmp" stringByAppendingPathComponent:path];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+        return [Promise promiseWithValue:path];
+
+    return [NSURLConnection GET:url].then(^(NSData *data){
+        [data writeToFile:path atomically:YES];
+        return path;
     });
 }
 
