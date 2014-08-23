@@ -3,7 +3,7 @@
 @import PreferencePanes;
 #import <PromiseKit.h>
 #define Promise PMKPromise
-#import "YOLO.h"
+#import <YOLO.h>
 
 enum MMAErrorCode {
     MMADiagnosticFailedRed,
@@ -15,7 +15,6 @@ enum MMAErrorCode {
 @end
 
 @interface NSTask (MM)
-- (Promise *)promise;
 + (instancetype):(id)parsable;
 @end
 

@@ -1,22 +1,21 @@
 #import <assert.h>
-@import Dispatch.introspection;
-@import Foundation.NSDictionary;
-@import Foundation.NSError;
-@import Foundation.NSException;
-@import Foundation.NSKeyValueCoding;
-@import Foundation.NSMethodSignature;
-@import Foundation.NSPointerArray;
+#import <dispatch/dispatch.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSError.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSMethodSignature.h>
+#import <Foundation/NSOperation.h>
+#import <Foundation/NSPointerArray.h>
 #import "Private/NSMethodSignatureForBlock.m"
 #import "PromiseKit/Promise.h"
+#import <string.h>
 
 #define IsPromise(o) ([o isKindOfClass:[PMKPromise class]])
 #define IsError(o) ([o isKindOfClass:[NSError class]])
 #define PMKE(txt) [NSException exceptionWithName:@"PromiseKit" reason:@"PromiseKit: " txt userInfo:nil]
 
 static const id PMKNull = @"PMKNull";
-
-@interface PMKArray : NSObject
-@end
 
 @interface PMKError : NSError
 { @public BOOL consumed; }
@@ -386,8 +385,8 @@ static void PMKResolve(PMKPromise *this, id result) {
     }
 }
 
-+ (PMKPromise *)new:(void(^)(PMKPromiseFulfiller, PMKPromiseRejecter))block {
-    PMKPromise *this = [PMKPromise alloc];
++ (instancetype)new:(void(^)(PMKPromiseFulfiller, PMKPromiseRejecter))block {
+    PMKPromise *this = [self alloc];
     this->_promiseQueue = PMKCreatePromiseQueue();
     this->_handlers = [NSMutableArray new];
 
@@ -507,27 +506,28 @@ PMKPromise *dispatch_promise_on(dispatch_queue_t queue, id block) {
 
 
 
-@implementation PMKArray
-{ @public NSArray *objs; }
+@implementation PMKArray { NSUInteger count; id objs[3]; }
+
++ (instancetype):(NSUInteger)count, ... {
+    PMKArray *this = [self new];
+    this->count = count;
+    va_list args;
+    va_start(args, count);
+    for (NSUInteger x = 0; x < count; ++x)
+        this->objs[x] = va_arg(args, id);
+    va_end(args);
+    return this;
+}
 
 - (id)objectAtIndexedSubscript:(NSUInteger)idx {
-	if(objs.count <= idx){
+	if (count <= idx) {
         // this check is necessary due to lack of checks in `safely_call_block`
 		return nil;
-	}
+    }
     return objs[idx];
 }
 
 @end
-
-#undef PMKManifold
-
-id PMKManifold(NSArray *args) {
-    if (!args.count) return nil;
-    PMKArray *aa = [PMKArray new];
-    aa->objs = args;
-    return aa;
-}
 
 
 

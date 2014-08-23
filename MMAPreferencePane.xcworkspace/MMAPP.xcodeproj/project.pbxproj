@@ -13,7 +13,7 @@
 		63243096182AA29200828D43 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63243095182AA29200828D43 /* main.xib */; };
 		63243098182AA4E400828D43 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63243097182AA4E400828D43 /* Images.xcassets */; };
 		6324309B182AB24A00828D43 /* MMALED.m in Sources */ = {isa = PBXBuildFile; fileRef = 6324309A182AB24A00828D43 /* MMALED.m */; };
-		6393B9C5182AE96D005161BA /* NSTask+Promise.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9C4182AE88D005161BA /* NSTask+Promise.m */; };
+		6393B9C5182AE96D005161BA /* NSTask+Parsable.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9C4182AE88D005161BA /* NSTask+Parsable.m */; };
 		6393B9D0182B1E6B005161BA /* MMASwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393B9CF182B1E6B005161BA /* MMASwitchView.m */; };
 		63A3BA1018B3D06C00C60A4E /* MobileMakers.terminal in Resources */ = {isa = PBXBuildFile; fileRef = 63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */; };
 		63C345E4182AA1EA00B3D152 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C345E3182AA1EA00B3D152 /* main.m */; };
@@ -29,7 +29,7 @@
 		63243097182AA4E400828D43 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../Resources/Images.xcassets; sourceTree = "<group>"; };
 		6324309A182AB24A00828D43 /* MMALED.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMALED.m; path = ../Sources/MMALED.m; sourceTree = SOURCE_ROOT; };
 		63697F1E199736550064AE5D /* MM.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MM.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
-		6393B9C4182AE88D005161BA /* NSTask+Promise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTask+Promise.m"; path = "../Sources/NSTask+Promise.m"; sourceTree = SOURCE_ROOT; };
+		6393B9C4182AE88D005161BA /* NSTask+Parsable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTask+Parsable.m"; path = "../Sources/NSTask+Parsable.m"; sourceTree = SOURCE_ROOT; };
 		6393B9CF182B1E6B005161BA /* MMASwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMASwitchView.m; path = ../Sources/MMASwitchView.m; sourceTree = SOURCE_ROOT; };
 		63A3BA0F18B3D06C00C60A4E /* MobileMakers.terminal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = MobileMakers.terminal; path = ../Resources/MobileMakers.terminal; sourceTree = SOURCE_ROOT; };
 		63C345DD182AA1EA00B3D152 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = SOURCE_ROOT; };
@@ -79,7 +79,7 @@
 				631040481912E1EE000797B1 /* checks.m */,
 				6324309A182AB24A00828D43 /* MMALED.m */,
 				6393B9CF182B1E6B005161BA /* MMASwitchView.m */,
-				6393B9C4182AE88D005161BA /* NSTask+Promise.m */,
+				6393B9C4182AE88D005161BA /* NSTask+Parsable.m */,
 				631040411912A97E000797B1 /* sheet.xib */,
 				63243097182AA4E400828D43 /* Images.xcassets */,
 				631040471912BD0D000797B1 /* Bundled */,
@@ -207,7 +207,7 @@
 				63C345E4182AA1EA00B3D152 /* main.m in Sources */,
 				6324309B182AB24A00828D43 /* MMALED.m in Sources */,
 				631040491912E1EE000797B1 /* checks.m in Sources */,
-				6393B9C5182AE96D005161BA /* NSTask+Promise.m in Sources */,
+				6393B9C5182AE96D005161BA /* NSTask+Parsable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

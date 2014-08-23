@@ -1,6 +1,5 @@
 #import <Chuzzle.h>
 #import "main.h"
-#import <YOLO.h>
 
 #define MMABashProfileContainsSourceLine [contents.split(@"\n").chuzzle containsObject:self.bashProfileLine]
 #define MMABundlePathPlus(x) [self.bundle.bundlePath stringByAppendingPathComponent:x]
