@@ -2,7 +2,7 @@
 
 Promise *MMACheckMavericks() {
     return [NSTask:@"/usr/sbin/sysctl kern.osrelease"].promise.then(^(NSString *stdout){
-        return [stdout.split(@":")[1] intValue];
+        return [NSStringChomp(stdout).split(@":")[1] intValue];
     }).then(^(NSNumber *code){
         if (code.intValue < 13)
             @throw [NSError errorWithDomain:MMAErrorDomain code:MMADiagnosticFailedRed userInfo:@{
@@ -52,7 +52,7 @@ Promise *MMACheckTextMate() {
 
 Promise *MMACheckGitHub() {
     id p1 = [NSTask:@"/usr/bin/git config credential.helper"].promise.then(^(NSString *stdout){
-        if (![stdout isEqualToString:@"cache"]) {
+        if (![stdout.chuzzle isEqualToString:@"cache"]) {
             id info = @{
                 NSLocalizedDescriptionKey: @"You need to setup Git’s credential helper. Turn on the big switch"
             };

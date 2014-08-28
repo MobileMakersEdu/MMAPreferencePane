@@ -105,7 +105,7 @@ static Promise *MMWritePrefs(NSArray *args) {
     id terminalPromises = dispatch_promise(^{
         id args = @[@"/usr/bin/defaults", @"read", @"com.apple.Terminal", @"Default Window Settings"];
         [NSTask:args].promise.then(^(id stdout){
-            if ([stdout isEqual:@"MobileMakers"])
+            if ([NSStringChomp(stdout) isEqual:@"MobileMakers"])
                 return [Promise promiseWithValue:@YES];
             id promises = @[
                 [NSTask:@[@"/usr/bin/open", @"-g", MMABundlePathPlus(@"Contents/Resources/MobileMakers.terminal")]].promise,

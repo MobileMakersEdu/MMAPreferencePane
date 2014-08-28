@@ -3,6 +3,7 @@
 @import PreferencePanes;
 #import <PromiseKit.h>
 #define Promise PMKPromise
+#import <sym0.h>
 #import <YOLO.h>
 
 enum MMAErrorCode {
