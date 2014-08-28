@@ -192,7 +192,11 @@ static Promise *MMWritePrefs(NSArray *args) {
         [self check];
         return checker;
     }).then(^{
-        return [NSString pmk_stringWithContentsOfFile:bashProfilePath];
+        return [NSString pmk_stringWithContentsOfFile:bashProfilePath].catch(^(NSError *err){
+            if (err.domain == NSCocoaErrorDomain && err.code == 260)
+                return @"";  // no such file
+            @throw err;
+        });
     }).then(^(NSString *contents) {
         if (!MMABashProfileContainsSourceLine) {
             contents = [contents stringByAppendingFormat:@"\n\n%@\n", self.bashProfileLine];
