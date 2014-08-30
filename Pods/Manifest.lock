@@ -8,13 +8,13 @@ PODS:
     - OMGHTTPURLRQ/UserAgent
   - OMGHTTPURLRQ/UserAgent (1.1.6):
     - OMGHTTPURLRQ/UserAgent
-  - PromiseKit/NSTask (0.9.16.2):
+  - PromiseKit/NSTask (0.9.16.3):
     - PromiseKit/Promise
-  - PromiseKit/NSURLConnection (0.9.16.2):
+  - PromiseKit/NSURLConnection (0.9.16.3):
     - OMGHTTPURLRQ
     - PromiseKit/Promise
-  - PromiseKit/Promise (0.9.16.2)
-  - PromiseKit/When (0.9.16.2):
+  - PromiseKit/Promise (0.9.16.3)
+  - PromiseKit/When (0.9.16.3):
     - PromiseKit/Promise
   - sym0 (1.2)
   - YOLOKit/base (11)
@@ -57,7 +57,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   ChuzzleKit: baeaabc3f09edbc56bbf776993afe7953286116f
   OMGHTTPURLRQ: 6fd7b1dcaed31734959699e42ea920eea380d1e7
-  PromiseKit: 80f517f709805edf8f967291380cd009456cd12f
+  PromiseKit: 54e9a1d7943ddc7d3ecfc7fa74ba09e87e849fe7
   sym0: a54d269559e672686209be319d83646fc5fbca1f
   YOLOKit: e83d381f83f33f2b66abf6fe0249fca57b05a541
 
