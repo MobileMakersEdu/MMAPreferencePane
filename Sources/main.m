@@ -138,6 +138,8 @@ static Promise *MMWritePrefs(NSArray *args) {
         }).thenOn(bgq, ^(NSString *stdout){
             NSString *ln = stdout.split(@"\n").lastObject;
             NSUInteger const start = [ln rangeOfString:@"/Volumes"].location;
+            if (start == NSNotFound)
+                @throw @"Could not mount GitX. Try installing it yourself manually.";
             NSString *mountPath = [[ln substringFromIndex:start] stringByAppendingPathComponent:@"GitX.app"];
 
             NSString *toPath = [MMAApplicationsDirectory stringByAppendingPathComponent:@"GitX.app"];
