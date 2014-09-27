@@ -13,9 +13,15 @@ Promise *MMACheckMavericks() {
 }
 
 Promise *MMACheckXcode() {
-    return [NSTask:@"/usr/bin/xcode-select --print-path"].promise.catch(^{
+    return mdfind(@"Xcode").then(^(NSString *path){
+        path = [path.chuzzle ?: @"" stringByAppendingPathComponent:@"Contents/version.plist"];
+        return [NSTask:@[@"/usr/bin/defaults", @"read", path, @"CFBundleVersion"]].promise;
+    }).then(^(NSString *stdout){
+        if (stdout.intValue < 6528)
+            @throw @NO;
+    }).catch(^{
         id info = @{
-            NSLocalizedDescriptionKey: @"You need to install Xcode",
+            NSLocalizedDescriptionKey: @"You need to install Xcode 6",
             NSLocalizedRecoverySuggestionErrorKey: @"https://itunes.apple.com/us/app/xcode/id497799835"
         };
         return [NSError errorWithDomain:MMAErrorDomain code:MMADiagnosticFailedRed userInfo:info];
