@@ -262,7 +262,7 @@ static Promise *MMWritePrefs(NSArray *args) {
 @implementation NSURLConnection (MMA)
 
 + (Promise *)download:(NSString *)url {
-    id path = [NSURL URLWithString:url].pathComponents.lastObject;
+    id path = [[NSURL URLWithString:url] pathComponents].lastObject;
     path = [@"/tmp" stringByAppendingPathComponent:path];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:path])
