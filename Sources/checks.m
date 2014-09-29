@@ -72,7 +72,7 @@ Promise *MMACheckGitHub() {
     id p1 = [NSTask:@"/usr/bin/git config credential.helper"].promise.then(^(NSString *stdout){
         if (![stdout.chuzzle isEqualToString:@"cache"]) {
             id info = @{
-                NSLocalizedDescriptionKey: @"You need to setup Git’s credential helper. Turn on the big switch"
+                NSLocalizedDescriptionKey: @"You need to setup Git’s credential helper. Turn on the big switch. Possibly you need to open Xcode and agree to Apple’s license."
             };
             @throw [NSError errorWithDomain:MMAErrorDomain code:MMADiagnosticFailedRed userInfo:info];
         }
