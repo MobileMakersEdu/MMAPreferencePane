@@ -6,10 +6,10 @@
 
 Promise *mdfind(NSString *app) {
     return [NSTask:@[@"/usr/bin/mdfind", app, @"kind:app"]].promise.then(^(NSString *stdout){
-        stdout = stdout.chuzzle;
-        if (!stdout)
+        id apps = stdout.split(@"\n").chuzzle;
+        if (!apps)
             @throw [NSString stringWithFormat:@"%@ not found", app];
-        return stdout;
+        return PMKManifold([apps firstObject], apps);
     });
 }
 
