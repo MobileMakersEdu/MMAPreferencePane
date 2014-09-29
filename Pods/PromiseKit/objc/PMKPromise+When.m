@@ -49,7 +49,19 @@
         }];
 
     return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter){
-        NSPointerArray *results = [NSPointerArray strongObjectsPointerArray];
+        NSPointerArray *results = nil;
+      #ifdef TARGET_OS_IPHONE
+        results = [NSPointerArray strongObjectsPointerArray];
+      #else
+        if ([[NSPointerArray class] respondsToSelector:@selector(strongObjectsPointerArray)]) {
+            results = [NSPointerArray strongObjectsPointerArray];
+        } else {
+          #pragma clang diagnostic push
+          #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            results = [NSPointerArray pointerArrayWithStrongObjects];
+          #pragma clang diagnostic pop
+        }
+      #endif
         results.count = count;
 
         NSUInteger ii = 0;
