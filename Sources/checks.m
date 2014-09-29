@@ -13,11 +13,23 @@ Promise *MMACheckMavericks() {
 }
 
 Promise *MMACheckXcode() {
-    return mdfind(@"Xcode").then(^(NSString *path){
-        path = [path.chuzzle ?: @"" stringByAppendingPathComponent:@"Contents/version.plist"];
-        return [NSTask:@[@"/usr/bin/defaults", @"read", path, @"CFBundleVersion"]].promise;
-    }).then(^(NSString *stdout){
-        if (stdout.intValue < 6528)
+    return mdfind(@"Xcode").then(^(NSString *unused, NSArray *paths){
+        return [PMKPromise when:paths.map(^(NSString *path){
+            return [NSTask:@[@"/usr/bin/defaults", @"read", [path stringByAppendingString:@"/Contents/Info.plist"], @"CFBundleIdentifier"]].promise.then(^(NSString *bundleID){
+                return @[bundleID, path];
+            });
+        })];
+    }).then(^(NSArray *bundleIdentifiers){
+        NSArray *versionPromises = bundleIdentifiers.select(^(NSArray *pair){
+            return [[pair[0] chuzzle] isEqualToString:@"com.apple.dt.Xcode"];
+        }).map(^(NSArray *pair){
+            return [pair[1] stringByAppendingPathComponent:@"Contents/Info.plist"];
+        }).map(^(NSString *plistPath){
+            return [NSTask:@[@"/usr/bin/defaults", @"read", plistPath, @"CFBundleVersion"]].promise;
+        });
+        return [PMKPromise when:versionPromises];
+    }).then(^(NSArray *versions){
+        if (versions.none(^(id version){ return [version intValue] >= 6528; }))
             @throw @NO;
     }).catch(^{
         id info = @{
