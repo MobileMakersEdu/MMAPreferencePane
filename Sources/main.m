@@ -138,13 +138,15 @@ static Promise *MMWritePrefs(NSArray *args) {
         return [NSURLConnection download:@"http://builds.phere.net/GitX/development/GitX-dev.dmg"].then(^(NSString *tmpPath){
             return [NSTask:@[@"/usr/bin/hdiutil", @"mount", tmpPath]].promise;
         }).thenOn(bgq, ^(NSString *stdout){
-            NSString *ln = stdout.split(@"\n").lastObject;
+            NSString *ln = stdout.split(@"\n").chuzzle.lastObject;
             NSUInteger const start = [ln rangeOfString:@"/Volumes"].location;
-            if (start == NSNotFound)
+            if (start == NSNotFound) {
+                NSLog(@"%@", stdout);
                 @throw @"Could not mount GitX. Try installing it yourself manually.";
+            }
             NSString *mountPath = [[ln substringFromIndex:start] stringByAppendingPathComponent:@"GitX.app"];
 
-            NSString *toPath = [MMAApplicationsDirectory stringByAppendingPathComponent:@"GitX.app"];
+            NSString *toPath = [MMAApplicationsDirectory() stringByAppendingPathComponent:@"GitX.app"];
 
             id err = nil;
             [[NSFileManager defaultManager] copyItemAtPath:mountPath toPath:toPath error:&err];
@@ -277,3 +279,14 @@ static Promise *MMWritePrefs(NSArray *args) {
 }
 
 @end
+
+
+NSString *MMAApplicationsDirectory() {
+    id s = @"~/Applications".stringByExpandingTildeInPath;
+    BOOL isdir;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:s isDirectory:&isdir] && isdir)
+        return s;
+
+    // if user is not admin this will fail and prompt them to install it themselves
+    return @"/Applications";
+}

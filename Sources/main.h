@@ -52,4 +52,4 @@ Promise *mdfind(NSString *app);
 + (Promise *)download:(NSString *)urlString;
 @end
 
-#define MMAApplicationsDirectory (@"~/Applications".stringByExpandingTildeInPath)
+NSString *MMAApplicationsDirectory();
