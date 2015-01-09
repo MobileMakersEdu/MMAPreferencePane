@@ -37,6 +37,18 @@ Promise *MMACheckXcode() {
             NSLocalizedRecoverySuggestionErrorKey: @"https://itunes.apple.com/us/app/xcode/id497799835"
         };
         return [NSError errorWithDomain:MMAErrorDomain code:MMADiagnosticFailedRed userInfo:info];
+    }).then(^{
+        // check if Xcode’s license prompt is not yet agreed
+        return [NSTask:@"/usr/bin/xcodebuild"].promise.catch(^(NSError *err){
+            // the error code is 69 if the license is not agreed and 63 otherwise
+            // hopefully this is future proofed :(
+            if ([err.userInfo[PMKTaskErrorExitStatusKey] integerValue] == 69) {
+                id info = @{
+                    NSLocalizedDescriptionKey: @"Run Xcode, and agree to Apple’s EULA.",
+                };
+                @throw [NSError errorWithDomain:MMAErrorDomain code:MMADiagnosticFailedRed userInfo:info];
+            }
+        });
     });
 }
 
