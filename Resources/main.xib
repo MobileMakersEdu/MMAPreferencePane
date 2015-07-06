@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="14A361c" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MMPane">
@@ -10,8 +10,6 @@
                 <outlet property="_window" destination="12" id="26"/>
                 <outlet property="bigSwitch" destination="PEs-or-JCS" id="4xC-mu-JQB"/>
                 <outlet property="git" destination="Gz4-a3-iCR" id="hH5-RY-okF"/>
-                <outlet property="github" destination="qjo-9X-It9" id="2P4-5b-tJP"/>
-                <outlet property="gitx" destination="b9C-wU-Bfo" id="QtQ-LB-inU"/>
                 <outlet property="mavericks" destination="SKz-1U-8p3" id="AAU-gD-Jta"/>
                 <outlet property="refresh" destination="hrW-60-R2A" id="9k2-FP-hDW"/>
                 <outlet property="spinner" destination="fZa-fM-ebW" id="PWw-Md-Y12"/>
@@ -36,7 +34,7 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="Icon" id="Thl-Wy-GBy"/>
                     </imageView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="5xx-9B-QJY">
-                        <rect key="frame" x="226" y="148" width="22" height="17"/>
+                        <rect key="frame" x="226" y="115" width="22" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Git" id="Enh-ES-QfQ">
                             <font key="font" metaFont="system"/>
@@ -44,17 +42,8 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="yCH-mS-e8w">
-                        <rect key="frame" x="226" y="123" width="31" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="GitX" id="NOL-fn-JKr">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="on5-Rg-86E">
-                        <rect key="frame" x="226" y="173" width="55" height="17"/>
+                        <rect key="frame" x="226" y="140" width="55" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Xcode 6" id="mFl-fX-lci">
                             <font key="font" metaFont="system"/>
@@ -62,17 +51,8 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="joT-Gn-OHy">
-                        <rect key="frame" x="226" y="98" width="48" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="GitHub" id="zhH-3i-1gB">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="ZJy-5j-b6o">
-                        <rect key="frame" x="226" y="198" width="67" height="17"/>
+                        <rect key="frame" x="226" y="165" width="67" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Mavericks" id="lNw-qm-Z3A">
                             <font key="font" metaFont="system"/>
@@ -81,27 +61,19 @@
                         </textFieldCell>
                     </textField>
                     <customView id="SKz-1U-8p3" customClass="MMALED">
-                        <rect key="frame" x="209" y="200" width="12" height="12"/>
+                        <rect key="frame" x="209" y="167" width="12" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <customView id="iF3-je-c8x" customClass="MMALED">
-                        <rect key="frame" x="209" y="175" width="12" height="12"/>
+                        <rect key="frame" x="209" y="142" width="12" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <customView id="Gz4-a3-iCR" customClass="MMALED">
-                        <rect key="frame" x="209" y="150" width="12" height="12"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    </customView>
-                    <customView id="b9C-wU-Bfo" customClass="MMALED">
-                        <rect key="frame" x="209" y="125" width="12" height="12"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    </customView>
-                    <customView id="qjo-9X-It9" customClass="MMALED">
-                        <rect key="frame" x="209" y="100" width="12" height="12"/>
+                        <rect key="frame" x="209" y="117" width="12" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="pa6-Nk-qJc">
-                        <rect key="frame" x="226" y="73" width="61" height="17"/>
+                        <rect key="frame" x="226" y="93" width="61" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="TextMate" id="yem-0I-fIm">
                             <font key="font" metaFont="system"/>
@@ -110,7 +82,7 @@
                         </textFieldCell>
                     </textField>
                     <customView id="uFf-dg-rxn" customClass="MMALED">
-                        <rect key="frame" x="209" y="75" width="12" height="12"/>
+                        <rect key="frame" x="209" y="95" width="12" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <customView id="PEs-or-JCS" customClass="MMASwitchView">

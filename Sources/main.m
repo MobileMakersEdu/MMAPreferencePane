@@ -37,8 +37,6 @@ static Promise *MMWritePrefs(NSArray *args) {
     IBOutlet MMALED *mavericks;
     IBOutlet MMALED *xcode;
     IBOutlet MMALED *git;
-    IBOutlet MMALED *gitx;
-    IBOutlet MMALED *github;
     IBOutlet MMALED *textmate;
     IBOutlet MMASwitchView *bigSwitch;
     IBOutlet NSButton *refresh;
@@ -46,6 +44,9 @@ static Promise *MMWritePrefs(NSArray *args) {
 
     Promise *switcher;
     Promise *checker;
+    
+    NSNumber* xcodeBaseBundleId;
+    NSNumber* currentxCodeVersion;
 }
 
 - (NSString *)bashProfileLine {
@@ -53,6 +54,7 @@ static Promise *MMWritePrefs(NSArray *args) {
     profile = [profile stringByReplacingOccurrencesOfString:@"~".stringByExpandingTildeInPath withString:@"~"];
     return [NSString stringWithFormat:@"source %@", profile];
 }
+
 
 - (void)mainViewDidLoad {
     bigSwitch.state  = NSOffState;
@@ -62,6 +64,8 @@ static Promise *MMWritePrefs(NSArray *args) {
     refresh.target = self;
     refresh.action = @selector(check);
 
+    [self loadRemoteConfig];
+    
     [spinner startAnimation:self];
     [self check];
     checker.finally(^{
@@ -73,6 +77,26 @@ static Promise *MMWritePrefs(NSArray *args) {
     bigSwitch.state = MMABashProfileContainsSourceLine ? NSOnState : NSOffState;
 }
 
+
+-(void)loadRemoteConfig
+{
+    NSURLResponse* response;
+    NSError* error;
+    NSData* data = [NSURLConnection sendSynchronousRequest:[NSURLRequest
+                                                            requestWithURL:[NSURL URLWithString:@"https://s3-us-west-2.amazonaws.com/mmprefpane/mmpref_pane.json"]]
+                                         returningResponse:&response error:&error];
+    
+    if (error != nil) {
+        id info = @{NSLocalizedDescriptionKey: @"Could not locate remote resource for tool versions."};
+        @throw [NSError errorWithDomain:MMAErrorDomain code:MMADiagnosticFailedRed userInfo:info];
+    }
+    else{
+        NSDictionary* jsonData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        xcodeBaseBundleId = jsonData[@"xcode base bundle id"];
+        currentxCodeVersion = jsonData[@"current Xcode version"];
+    }
+}
+
 - (void)awakeFromNib {
     bigSwitch.target = self;
     bigSwitch.action = @selector(onSwitchToggled);
@@ -82,18 +106,16 @@ static Promise *MMWritePrefs(NSArray *args) {
     if (checker)
         return;
 
-    [@[mavericks, xcode, git, gitx, github, textmate] makeObjectsPerformSelector:@selector(reset)];
+    [@[mavericks, xcode, git, textmate] makeObjectsPerformSelector:@selector(reset)];
 
-    id p1, p2, p3, p4, p5, p6;
+    id p1, p2, p3, p6;
 
     [mavericks check:p1 = MMACheckMavericks()];
-    [xcode check:p2 = MMACheckXcode()];
+    [xcode check:p2 = MMACheckXcode(xcodeBaseBundleId, currentxCodeVersion)];
     [git check:p3 = MMACheckGit()];
-    [gitx check:p4 = MMACheckGitX()];
-    [github check:p5 = MMACheckGitHub()];
     [textmate check:p6 = MMACheckTextMate()];
 
-    checker = [Promise when:@[p1, p2, p3, p4, p5, p6]].finally(^{
+    checker = [Promise when:@[p1, p2, p3, p6]].finally(^{
         checker = nil;
     });
 }
@@ -117,6 +139,7 @@ static Promise *MMWritePrefs(NSArray *args) {
             return [Promise when:promises];
         });
     });
+    
     id xcodePromises = @[
         dispatch_promise(^id{
             id err = nil;
@@ -125,8 +148,8 @@ static Promise *MMWritePrefs(NSArray *args) {
             id src = [self.bundle.bundlePath stringByAppendingString:@"/Contents/Resources/MobileMakers.dvtcolortheme"];
             [mgr createDirectoryAtPath:dst withIntermediateDirectories:YES attributes:nil error:nil];
             [mgr copyItemAtPath:src toPath:[dst stringByAppendingString:@"/MobileMakers.dvtcolortheme"] error:&err];
-            if ([err code] == 516 || !err)
-                return MMWritePrefs(@"com.apple.dt.Xcode", @"DVTFontAndColorCurrentTheme", @"MobileMakers.dvtcolortheme");
+            //if ([err code] == 516 || !err)
+            //    return MMWritePrefs(@"com.apple.dt.Xcode", @"DVTFontAndColorCurrentTheme", @"MobileMakers.dvtcolortheme");
             return nil;
         }),
         MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextEditorTrimWhitespaceOnlyLines", @"-bool", @"YES"),
@@ -134,30 +157,31 @@ static Promise *MMWritePrefs(NSArray *args) {
         MMWritePrefs(@"com.apple.dt.Xcode", @"DVTTextEditorTrimTrailingWhitespace", @"-bool", @"YES"),
     ];
 
-    id gitxPromise = MMACheckGitX().catch(^{
-        return [NSURLConnection download:@"http://builds.phere.net/GitX/development/GitX-dev.dmg"].then(^(NSString *tmpPath){
-            return [NSTask:@[@"/usr/bin/hdiutil", @"mount", tmpPath]].promise;
-        }).thenOn(bgq, ^(NSString *stdout){
-            NSString *ln = stdout.split(@"\n").chuzzle.lastObject;
-            NSUInteger const start = [ln rangeOfString:@"/Volumes"].location;
-            if (start == NSNotFound) {
-                NSLog(@"%@", stdout);
-                @throw @"Could not mount GitX. Try installing it yourself manually.";
-            }
-            NSString *mountPath = [[ln substringFromIndex:start] stringByAppendingPathComponent:@"GitX.app"];
-
-            NSString *toPath = [MMAApplicationsDirectory() stringByAppendingPathComponent:@"GitX.app"];
-
-            id err = nil;
-            [[NSFileManager defaultManager] copyItemAtPath:mountPath toPath:toPath error:&err];
-
-            NSTask *task = [NSTask:@[@"/usr/bin/hdiutil", @"unmount", mountPath]];
-            [task launch];
-            [task waitUntilExit];
-
-            if (err) @throw err;
-        });
-    });
+    // Not currently used --dbora
+//    id gitxPromise = MMACheckGitX().catch(^{
+//        return [NSURLConnection download:@"http://builds.phere.net/GitX/development/GitX-dev.dmg"].then(^(NSString *tmpPath){
+//            return [NSTask:@[@"/usr/bin/hdiutil", @"mount", tmpPath]].promise;
+//        }).thenOn(bgq, ^(NSString *stdout){
+//            NSString *ln = stdout.split(@"\n").chuzzle.lastObject;
+//            NSUInteger const start = [ln rangeOfString:@"/Volumes"].location;
+//            if (start == NSNotFound) {
+//                NSLog(@"%@", stdout);
+//                @throw @"Could not mount GitX. Try installing it yourself manually.";
+//            }
+//            NSString *mountPath = [[ln substringFromIndex:start] stringByAppendingPathComponent:@"GitX.app"];
+//
+//            NSString *toPath = [MMAApplicationsDirectory() stringByAppendingPathComponent:@"GitX.app"];
+//
+//            id err = nil;
+//            [[NSFileManager defaultManager] copyItemAtPath:mountPath toPath:toPath error:&err];
+//
+//            NSTask *task = [NSTask:@[@"/usr/bin/hdiutil", @"unmount", mountPath]];
+//            [task launch];
+//            [task waitUntilExit];
+//
+//            if (err) @throw err;
+//        });
+//    });
 
     id textMatePromise = MMACheckTextMate().catch(^{
         return [NSURLConnection download:@"https://api.textmate.org/downloads/release"].thenOn(bgq, ^(NSString *tmpPath){
@@ -179,7 +203,6 @@ static Promise *MMWritePrefs(NSArray *args) {
 
     id promises = @[
         textMatePromise,
-        gitxPromise,
         gitPromise,
         [Promise when:terminalPromises].then(^{
             return MMSyncPrefs(@"com.apple.Terminal");
